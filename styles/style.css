@@ -16,20 +16,20 @@ body {
   width: 600px;
 }
 
-.collapsible {
-  background-color: black;
-  color: white;
-  cursor: pointer;
-  width: 600px;
-  font-size: 15px;
-}
-
-.active, .collapsible:hover {
-  background-color: black;
-}
-
-.content {
+input[type='checkbox'] {
   display: none;
+}
+
+.lbl-toggle {
+  diplay: block;
+  cursor: pointer;
+}
+
+.collapsible-content {
+  max-height: 0px;
   overflow: hidden;
-  background-color: white;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 100vh;
 }
