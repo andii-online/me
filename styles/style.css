@@ -12,10 +12,6 @@ html {
   width: 600px;
 }
 
-li {
-  padding: 20px 0 0 20px;
-}
-
 body {
   padding: 0 0 0 20px;
   width: 600px;
@@ -38,10 +34,18 @@ input[type='checkbox'] {
 
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 5px solid black;
+  border-left: 5px solid white;
+
+  margin-right: .7rem;
 
   vertical-align: middle;
   transform: translateY(-2px);
+}
+
+.collapsible-content .content-inner {
+  background: black;
+  color: white;
+  padding: .5rem 1rem;
 }
 
 .collapsible-content {
