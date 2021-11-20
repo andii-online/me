@@ -7,6 +7,10 @@ html {
   width: 600px;
 }
 
+li {
+  padding: 20px 0 0 20px;
+}
+
 body {
   padding: 0 0 0 20px;
   width: 600px;
