@@ -1,10 +1,12 @@
-p, header {
+p {
   color: black;
 }
 
 header {
   font-size: 32px;
   font-weight: bold;
+  color: black;
+  padding: 0 20px;
 }
 
 html {
@@ -43,8 +45,8 @@ input[type='checkbox'] {
 }
 
 .collapsible-content .content-inner {
+  color: white; !important;
   background: black;
-  color: white;
   padding: .5rem 1rem;
 }
 
