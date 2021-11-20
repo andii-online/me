@@ -1,9 +1,15 @@
-html {
+a, p, li, header {
   color: black;
 }
 
 html {
   padding: 20px 20px;
+  width: 600px;
+}
+
+body {
+  padding: 0 0 0 20px;
+  width: 600px;
 }
 
 
