@@ -16,4 +16,20 @@ body {
   width: 600px;
 }
 
+.collapsible {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  width: 600px;
+  font-size: 15px;
+}
 
+.active, .collapsible:hover {
+  background-color: black;
+}
+
+.content {
+  display: none;
+  overflow: hidden;
+  background-color: white;
+}
