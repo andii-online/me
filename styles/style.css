@@ -12,6 +12,9 @@ header {
 html {
   padding: 20px 20px;
   width: 600px;
+  font-family: 'HankenLight';
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
