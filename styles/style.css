@@ -5,6 +5,21 @@ html {
   font-size: 20px;
 }
 
+a:link {
+  color: #312b45;
+}
+
+a:visited {
+  color: #04000f;
+
+a:hover {
+  color: black;
+}
+
+a:active {
+  color: #242424;
+}
+
 h1 {
   display: block;
   margin-top: 1em;
@@ -12,4 +27,8 @@ h1 {
   margin-left: 0;
   margin-right; 0;
   font-weight: bold;
+}
+
+* {
+  white-space: pre-wrap;
 }
