@@ -5,6 +5,10 @@ html {
   font-size: 20px;
 }
 
+#nav li {
+  display: inline;
+}
+
 a:link {
   color: #312b45;
 }
