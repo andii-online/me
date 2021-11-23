@@ -1,27 +1,15 @@
-p {
-  color: black;
-}
-
-header {
-  font-size: 32px;
-  font-weight: bold;
-  color: black;
-  padding: 0 20px;
-}
-
 html {
   padding: 20px 20px;
-  width: 600px;
   font-family: 'HankenLight';
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  padding: 0 0 0 20px;
   width: 600px;
 }
 
+/* Used to create a css-only toggle area */
 ul.nav > li {
   display: inline-block;
   padding: 10px 20px;
