@@ -9,18 +9,7 @@ html {
   display: inline;
 }
 
-a:link {
-  color: #312b45;
-}
-
-a:visited {
-  color: #04000f;
-
-a:hover {
-  color: black;
-}
-
-a:active {
+a{
   color: #242424;
 }
 
@@ -34,5 +23,5 @@ h1 {
 }
 
 * {
-  white-space: pre-wrap;
+  white-space: pre;
 }
