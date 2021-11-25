@@ -13,7 +13,7 @@ body {
   justify-content: center;
 }
 
-#nav li {
+#nav href {
   display: inline;
 }
 
