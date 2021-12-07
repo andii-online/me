@@ -66,6 +66,10 @@ main p a {
   font-weight: bold;
 }
 
+main p a:hover {
+  background-color: black;
+}
+
 main p.intro {
   text-align: center;
 }
