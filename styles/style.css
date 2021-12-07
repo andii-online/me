@@ -19,7 +19,7 @@ html {
 header {
   background: white;
   text-align: center;
-  color: black;
+  color: #242424;
 }
 
 body { 
@@ -29,15 +29,15 @@ body {
   flex-direction: column;
   justify-content: center;
   color: white;
-  background: black;
+  background: #242424;
 }
 
 #nav href {
   display: inline;
 }
 
-a{
-  color: #242424;
+a {
+  color: white;
 }
 
 main {
