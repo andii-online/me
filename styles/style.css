@@ -29,6 +29,19 @@ h1 {
   font-weight: bold;
 }
 
-* {
-  white-space: pre;
+p {
+  padding: 5px;
 }
+
+main p.intro {
+  text-align: center;
+}
+
+main p {
+  display: block;
+  max-width: 600px;
+  font-size: 18;
+  margin: 0 auto 30px auto;
+  line-height: 32px;
+}
+
