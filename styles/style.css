@@ -10,6 +10,7 @@ html {
   color: #242424;
   padding: 10px;
   opacity: 1.0;
+}
 
 * {
   margin: 0;
@@ -20,6 +21,7 @@ html {
   vertical-align: baseline;
   border-collapse: collapse;
   border-spacing: 0;
+  text-decoration: none;
 }
 
 header {
