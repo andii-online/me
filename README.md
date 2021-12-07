@@ -9,3 +9,8 @@
 - download links to projects
 - contact form
 - others...
+
+# inspired by:
+<jacob.chvatal.com>
+<kokorobot.ca>
+<100r.co>
