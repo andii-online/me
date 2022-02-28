@@ -92,3 +92,7 @@ project-group {
 project-content {
   display: inline;
 }
+
+project-content img {
+  max-width: 100px;
+}
