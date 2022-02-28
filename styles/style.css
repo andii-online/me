@@ -82,5 +82,13 @@ main p {
   font-size: 18;
   margin: 0 auto 30px auto;
   line-height: 32px;
+  font-weight: normal;
 }
 
+project-group {
+  background-color: grey;
+}
+
+project-content {
+  display: inline;
+}
