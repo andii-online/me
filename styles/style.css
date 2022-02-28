@@ -1,6 +1,5 @@
 html {
-  font-family: 'HankenLight';
-  font-weight: normal;
+  font-family: 'HankenLight'; font-weight: normal;
   font-style: normal;
   font-size: 20px;
 }
@@ -85,14 +84,20 @@ main p {
   font-weight: normal;
 }
 
-project-group {
+main project-group {
   background-color: grey;
 }
 
-project-content {
+main project-content {
   display: inline;
 }
 
-project-content img {
+main project-content img {
   max-width: 100px;
+}
+
+main project-group a:hover {
+  background-color: white;
+  color: black;
+  text-decoration: none;
 }
