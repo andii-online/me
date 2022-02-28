@@ -84,19 +84,19 @@ main p {
   font-weight: normal;
 }
 
-main project-group {
+main div.project-group {
   background-color: grey;
 }
 
-main project-content {
+main div.project-content {
   display: inline;
 }
 
-main project-content img {
+main div.project-content img {
   max-width: 100px;
 }
 
-main project-group a:hover {
+main a.project-group a:hover {
   background-color: white;
   color: black;
   text-decoration: none;
