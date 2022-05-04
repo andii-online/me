@@ -10,12 +10,12 @@
 - fun web toys
 
 # to recompile
-after installing cargo, navigate to the `src` directory.
+after installing `cargo`, navigate to the `src` directory.
 ```
 cargo run
 ```
 
 # inspired by:
-<jacob.chvatal.com>
-<kokorobot.ca>
-<100r.co>
+(jacob.chvatal.com)
+(kokorobot.ca)
+(100r.co)
