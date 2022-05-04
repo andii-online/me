@@ -10,7 +10,10 @@
 - fun web toys
 
 # to recompile
-'cargo run' in src/
+after installing cargo, navigate to the src/ directory.
+'''
+cargo run
+'''
 
 # inspired by:
 <jacob.chvatal.com>
