@@ -10,7 +10,7 @@
 - fun web toys
 
 # to recompile
-after installing cargo, navigate to the src/ directory.
+after installing cargo, navigate to the `src` directory.
 ```
 cargo run
 ```
