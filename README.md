@@ -11,9 +11,9 @@
 
 # to recompile
 after installing cargo, navigate to the src/ directory.
-'''
+```
 cargo run
-'''
+```
 
 # inspired by:
 <jacob.chvatal.com>
