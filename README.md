@@ -16,6 +16,6 @@ cargo run
 ```
 
 # inspired by:
-(jacob.chvatal.com)
-(kokorobot.ca)
-(100r.co)
+[jacob.chvatal.com](jacob.chvatal.com)
+[kokorobot.ca](kokorobot.ca)
+[100r.co](100r.co)
