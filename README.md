@@ -19,3 +19,4 @@ cargo run
 [jacob.chvatal.com](https://www.jacob.chvatal.com)
 [kokorobot.ca](https://kokorobot.ca)
 [100r.co](https://100r.co)
+[splendid.land](https://www.splendid.land/)
