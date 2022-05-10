@@ -21,7 +21,7 @@ const HEADER: &str = "<!DOCTYPE html>
 <a href='home.html'>andrew straus</a>
 </h1>
 <ul class='nav'>
-<a href='home.html'>about</a>
+<a href='about.html'>about</a>
 <a href='projects.html'>projects</a>
 </ul>
 </header>
