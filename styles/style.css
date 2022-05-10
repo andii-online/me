@@ -8,6 +8,9 @@ html, body {
   height: 100%;
 }
 
+img {
+  draggable: none;
+}
 
 ::selection {
   background: white;
@@ -45,8 +48,8 @@ nav {
   flex-direction: column;
   padding: 45px;
   float: left;
-  height: 100%;
   width: 15%;
+  height: 100%;
 }
 
 nav h1 {
@@ -89,9 +92,7 @@ nav a:hover {
 
 main {
   float: left;
-  margin: 0px auto;
-  margin-bottom: 45px;
-  padding: 30px;
+  padding: 50px 100px 0 100px;
   width: 85%;
   height: 100%;
   display: block;
@@ -115,16 +116,16 @@ main p.intro {
 }
 
 main p {
-  display: block;
+  padding-bottom: 20px;
   max-width: 600px;
   font-size: 18;
-  margin: 0 auto 30px auto;
   line-height: 32px;
   font-weight: normal;
 }
 
-main div.project-group {
-  background-color: grey;
+main a.project-group h3 {
+  color: #d9a066;
+  text-decoration: underline;
 }
 
 main div.project-content {
@@ -135,10 +136,10 @@ main div.project-content img {
   max-width: 100px;
 }
 
-main a.project-group a:hover {
-  background-color: white;
-  color: black;
+main a.project-group:hover {
+  color: white;
   text-decoration: none;
+  background: grey;
 }
 
 main img.home {
@@ -149,15 +150,7 @@ main img.home {
   height: auto;
 }
 
-main div.contact {
-  display: block;
-  max-width: 600px;
-  font-size: 18;
-  margin: 0 auto 30px auto;
-  line-height: 32px;
-  font-weight: normal;
-}
-
 main div.contact h1 {
   font-size: 32px;
+  color: #d9a066;
 }
