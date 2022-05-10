@@ -6,6 +6,8 @@
 - i am also using this project to learn html, css, and website structure.
 
 # planned features
+- flesh out projects to have separate pages for each project
+- blog
 - recognize browser dark-mode and change style accordingly
 - fun web toys
 
