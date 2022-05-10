@@ -18,12 +18,30 @@ const HEADER: &str = "<!DOCTYPE html>
 <body>
 <header>
 <h1>
-<a href='home.html'>andrew straus</a>
+<a href='home.html'>andy land</a>
 </h1>
-<ul class='nav'>
-<a href='about.html'>about</a>
-<a href='projects.html'>projects</a>
+<nav id='menu'>
+<ul>
+
+<li class='category'>
+<a>playground</a>
+<ul>
+
+<li class='item'>
+<a href='about.html'><img src='../content/about.png'> about</a>
+</li>
+
+<li class='item'>
+<a href='projects.html'><img src='../content/projects.png'> projects</a>
+</li>
+
+<li class='item'>
+<a href='contact.html'><img src='../content/contact.png'> contact</a>
+</li>
+
 </ul>
+</ul>
+</nav>
 </header>
 ";
 
