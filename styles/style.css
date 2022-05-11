@@ -187,5 +187,6 @@ main div.contact h1 {
 
   main { overflow-y: none;
     height: auto;
+    padding: 10px;
   }
 }
