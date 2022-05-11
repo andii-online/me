@@ -26,7 +26,6 @@ img {
   outline: 0;
   font-size: 100%;
   color: inherit;
-  //vertical-align: baseline;
   border-collapse: collapse;
   border-spacing: 0;
   text-decoration: none;
@@ -34,7 +33,6 @@ img {
 }
 
 body { 
-  display: flex;
   position: relative;
   color: #3c6478;
   background: #222034;
@@ -96,6 +94,7 @@ main {
   width: 85%;
   height: 100%;
   display: block;
+  overflow-y: auto;
 }
 
 
@@ -111,14 +110,15 @@ main p a:hover {
   text-decoration: none;
 }
 
-main p.intro {
+main p.intro { 
   text-align: center;
 }
 
 main p {
   padding-bottom: 20px;
   max-width: 600px;
-  font-size: 18;
+  margin: 0 auto 30px auto;
+  font-size: 18px;
   line-height: 32px;
   font-weight: normal;
 }
@@ -153,4 +153,39 @@ main img.home {
 main div.contact h1 {
   font-size: 32px;
   color: #d9a066;
+}
+
+/* Mobile and Small Screens */
+@media (max-width: 1100px) {
+  nav {
+    flex-direction: none;
+    float: left;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    padding: 15px;
+  }
+
+  nav ul {
+    margin: auto;
+  }
+
+  nav ul li ul {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+  }
+
+  nav img {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 160px;
+  }
+
+  main { overflow-y: none;
+    height: auto;
+  }
 }
