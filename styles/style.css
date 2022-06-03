@@ -9,8 +9,12 @@ html, body {
 }
 
 img {
-  draggable: none;
-}
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  }
 
 ::selection {
   background: white;
@@ -37,6 +41,8 @@ body {
   color: #3c6478;
   background: #222034;
   height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 nav {
@@ -44,16 +50,18 @@ nav {
   background: #3d3a5e;
   display: flex;
   flex-direction: column;
-  padding: 45px;
+  padding: 30px;
   float: left;
-  width: 15%;
+  width: 250px;
   height: 100%;
+  overflow-y: auto; 
 }
 
-nav h1 {
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 15px;
+nav div.home {
+  padding: 0;
+  padding-bottom: 20px;
+  text-align: left;
+  margin:0;
 }
 
 nav h3 {
@@ -71,18 +79,23 @@ nav ul li li {
   padding-bottom: 20px;
   text-decoration: none;
   text-align: center;
+  flex-direction: column;
 }
 
-nav img {
+nav div.home img {
+  width: 60%;
+  text-decoration: none;
+}
+
+nav ul img {
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
-  max-width: 160px;
+  width: 70%;
 }
 
-nav a:hover {
+nav ul a:hover {
   background-color: white;
   color: black;
   text-decoration: none;
@@ -91,9 +104,10 @@ nav a:hover {
 main {
   float: left;
   padding: 50px 100px 0 100px;
-  width: 85%;
+  width: auto;
   height: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
 }
 
@@ -117,7 +131,6 @@ main p.intro {
 main p {
   padding-bottom: 20px;
   max-width: 600px;
-  margin: 0 auto 30px auto;
   font-size: 18px;
   line-height: 32px;
   font-weight: normal;
@@ -151,43 +164,76 @@ main img.home {
 }
 
 main div.contact h1 {
-  font-size: 32px;
+  display: block;
+  width: 100%;
+  font-size: 4vw;
   color: #d9a066;
 }
 
-/* Mobile and Small Screens */
 @media (max-width: 1100px) {
   nav {
-    flex-direction: none;
+    width: 200px;
+  }
+
+  main {
+    padding: 50px 50px 0 30px;
+  }
+}
+
+/* Mobile and Small Screens */
+@media (max-width: 700px) {
+  body {
+    display: block;
+    flex-direction: unset;
+  }
+
+  nav {
+    flex-direction: column;
     float: left;
     width: 100%;
     height: auto;
     text-align: center;
     padding: 15px;
-  }
-
-  nav ul {
-    margin: auto;
+    overflow-y: unset;
+    font-size: 5vw;
   }
 
   nav ul li ul {
-    display: flex;
-    flex-direction: row;
-    margin: auto;
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: auto;
+    overflow-y: hidden;
+  }
+
+  nav ul li ul li {
+    width:auto;
+    margin:2vw;
+    padding:0;
+    display:inline-block;
   }
 
   nav img {
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    max-width: 160px;
+    width: 18vw;
   }
 
-  main { overflow-y: none;
+  main { 
+    min-width: unset;
+    max-width: unset;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: auto;
     padding: 10px;
+  }
+
+  main p {
+    width: unset;
+    font-size: 20px;
+  }
+
+  main div.contact h1 {
+    display: block;
+    width: 100%;
+    font-size: 6vw;
   }
 }
