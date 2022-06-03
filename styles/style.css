@@ -136,17 +136,9 @@ main p {
   font-weight: normal;
 }
 
-main a.project-group h3 {
-  color: #d9a066;
-  text-decoration: underline;
-}
-
-main div.project-content {
-  display: inline;
-}
-
-main div.project-content img {
-  max-width: 100px;
+main a.project-group img {
+  width: 200px;
+  height: 300px;
 }
 
 main a.project-group:hover {

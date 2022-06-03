@@ -120,7 +120,7 @@ impl Webpage {
     }
 
     fn name(&self) -> &str {
-        self.filepath.file_name().unwrap().to_str().unwrap()
+        self.filepath.file_stem().unwrap().to_str().unwrap()
     }
 }
 
