@@ -198,6 +198,13 @@ main div.contact h1 {
     font-size: 5vw;
   }
 
+  nav div.home {
+    padding: inherit;
+    padding-bottom: 20px;
+    text-align: center;
+    margin:0;
+  }
+
   nav ul li ul {
     width: 100%;
     display: inline-block;
