@@ -57,6 +57,17 @@ const NAV: &str = "
 </nav>
 ";
 
+const FOOTER: &str = "
+<footer>
+<p>
+<a href='home.html'>andrew straus</a>
+ © 2022
+<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
+<a href ='https://github.com/andrewstraus99/me'> *website src</a>
+</p>
+</footer>
+";
+
 // generate /site/index.html
 // list of links to pages
 // NAME.htm -> <a href=/site/NAME.html>NAME</a>
@@ -112,6 +123,7 @@ impl Webpage {
         content.push_str(&self.content);
         content.push_str("</main>");
         content.push_str("</body>");
+        content.push_str(FOOTER);
 
         println!("Writing {} to {}", self.name(), dest_dir.join(&self.filepath).display());
 

@@ -43,6 +43,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: row;
+  padding-bottom: 50px;
 }
 
 nav {
@@ -163,6 +164,22 @@ main div.contact h1 {
   color: #d9a066;
 }
 
+/* ------------ FOOTER ------------*/
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  padding: 10px 10px 10px 30px;
+  color: #222034;
+  background: #7da8d2;
+}
+
+footer a:hover {
+  background: white;
+  color: #7da8d2;
+}
+
 @media (max-width: 1100px) {
   nav {
     width: 200px;
@@ -219,7 +236,7 @@ main div.contact h1 {
   }
 
   nav img {
-    width: 18vw;
+    max-width: 160px;
   }
 
   main { 
@@ -229,6 +246,7 @@ main div.contact h1 {
     flex-direction: column;
     width: 100%;
     padding: 10px;
+    overflow-y: unset;
   }
 
   main p {
@@ -261,5 +279,22 @@ main div.contact h1 {
 
   main a.project-group:hover {
     text-decoration: none;
+  }
+
+  /* ------------ FOOTER ------------*/
+  footer {
+    position: relative;
+    bottom: unset;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    padding: 10px 10px 30px 10px;
+    color: #222034;
+    background: #7da8d2;
+  }
+
+  footer a:hover {
+    background: white;
+    color: #7da8d2;
   }
 }
