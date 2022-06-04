@@ -16,11 +16,11 @@ img {
   user-select: none;
   }
 
-::selection {
-  background: white;
-  color: #242424;
-  padding: 10px;
-  opacity: 1.0;
+a:hover {
+  background: #7da8d2;
+  background-color: #7da8d2;
+  color: white;
+  text-decoration: none;
 }
 
 * {
@@ -93,39 +93,17 @@ nav ul img {
   margin-left: auto;
   margin-right: auto;
   width: 70%;
-}
-
-nav ul a:hover {
-  background-color: white;
-  color: black;
-  text-decoration: none;
+  padding-bottom: 10px;
 }
 
 main {
   float: left;
   padding: 50px 100px 0 100px;
-  width: auto;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-}
-
-
-main p a {
-  color: white;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-main p a:hover {
-  background-color: white;
-  color: black;
-  text-decoration: none;
-}
-
-main p.intro { 
-  text-align: center;
 }
 
 main p {
@@ -136,15 +114,29 @@ main p {
   font-weight: normal;
 }
 
+main p a {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+main p.intro { 
+  text-align: center;
+}
+
+/* Used for displaying project preview images */
+main div.project {
+  max-width: 700px;
+  display: block;
+}
+
 main a.project-group img {
   width: 200px;
   height: 300px;
 }
 
 main a.project-group:hover {
-  color: white;
   text-decoration: none;
-  background: grey;
 }
 
 main img.home {
@@ -169,6 +161,11 @@ main div.contact h1 {
 
   main {
     padding: 50px 50px 0 30px;
+  }
+
+  main a.project-group img {
+    width: 20vw;
+    height: 30vw;
   }
 }
 
@@ -234,5 +231,21 @@ main div.contact h1 {
     display: block;
     width: 100%;
     font-size: 6vw;
+  }
+
+  /* Used for displaying project preview images */
+  main div.project {
+    max-width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  main a.project-group img {
+    width: 30vw;
+    height: 45vw;
+  }
+
+  main a.project-group:hover {
+    text-decoration: none;
   }
 }
