@@ -19,10 +19,6 @@ const NAV: &str = "
 </li>
 
 <li class='item'>
-<a href='resume.html'><img src='../content/resume.png'>resume</a>
-</li>
-
-<li class='item'>
 <a href='contact.html'><img src='../content/contact.png'>contact</a>
 </li>
 
