@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang='en'><head><title>andrew straus - chip-8-emu</title><meta name='description' content='welcome to me, andrew straus. this is my resume, portfolio, and personal showcase space. please take a look around. this is me saying welcome from the etherial plane of existance.'> <link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> <link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> <link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> <link rel='manifest' href='../site.webmanifest'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <link href='../styles/style.css' rel='stylesheet'> <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> </head> <body>
+<nav id='menu'>
+<div class='home'><a href='home.html'><img src='../content/home.png'></a></div>
+<ul>
+<li class='category'>
+<h3>playground</h3>
+<ul>
+
+<li class='item'>
+<a href='about.html'><img src='../content/about.png'>about</a>
+</li>
+
+<li class='item'>
+<a href='projects.html'><img src='../content/projects.png'>projects</a>
+</li>
+
+<li class='item'>
+<a href='contact.html'><img src='../content/contact.png'>contact</a>
+</li>
+
+</ul>
+</li>
+
+<li class='category'>
+<h3>external links</h3>
+<ul>
+
+<li class='item'>
+<a href='https://radlynn.itch.io'><img src='../content/itch.png'>itch.io</a>
+</li>
+
+<li class='item'>
+<a href='https://twitter.com/thickfatherandy'><img src='../content/twitter.png'>tweetsers</a>
+</li>
+
+</ul>
+</li>
+
+<li class='category'>
+<h3>meta</h3>
+<ul>
+<li class='item'>
+<a href='index.html'><img src='../content/index.png'>index</a>
+</li>
+</ul>
+</li>
+
+</ul>
+</nav>
+<main>
+<h1>An Oxidized Chip-8 Emulator</h1>
+
+<p>
+<a href="https://github.com/andrewstraus99/chip-8-emu">source for project here</a>
+I have been an avid user of emulators for a long time, 
+but I didn't have an understanding for how they worked internally.
+So, I decided to start my journey into emulation by writing
+a Chip-8 emulator (or interpreter if you want to be pedantic).
+</p>
+
+<h2>Background on Chip-8</h2>
+<p>
+As I alluded to earlier, the 
+<a href="https://en.wikipedia.org/wiki/CHIP-8">Chip-8</a>
+ is in-fact not an emulator, but instead an interpreted programming 
+language. It was developed in the 70's by Joseph Weisecker. I will
+be calling it an emulator from here on our just for the sake of 
+simplicity, as that was the goal of this project from the jump.
+</p>
+
+<h2>Design of Emulator</h2>
+<p>
+I used Tobias Langhoff's 
+<a href=""https://tobiasvl.github.io/blog/write-a-chip-8-emulator/>excellent breakdown</a> 
+of the system when 
+designing my program. 
+
+My design philosophy is to follow a loose data-oriented paradigm to utilize 
+Rust's amazing type system.
+
+The Chip-8's internals are stored in a struct.
+
+During a cpu cycle, the instruction is parsed and sent off to 
+a function that represents the given opcode. This allows me to do 
+some type checking to guarentee that the program doesn't crash 
+from an incorrect integer cast.
+
+Rendering is completely separate from the Chip-8 and is handled 
+with the SDL2 rust bindings.
+</p>
+</main></body>
+<footer>
+<p>
+<a href='home.html'>andrew straus</a>
+ © 2022
+<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
+<a href ='https://github.com/andrewstraus99/me'> *website src</a>
+</p>
+</footer>
