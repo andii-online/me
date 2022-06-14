@@ -1,0 +1,6 @@
+# sorry robots, this website is for people only.
+User-agent: *
+Disallow: /
+
+User-agent: *
+Disallow: 
