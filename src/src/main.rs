@@ -78,11 +78,15 @@ struct Webpage {
 impl Webpage {
     // Constructs a new Webpage from an .htm source
     pub fn from_src(src_path: PathBuf) -> Webpage {
-        assert_eq!("htm", src_path.extension().unwrap(), "Webpage cannot be constructed from a non-htm source.");
+        assert_eq!(
+            "htm",
+            src_path.extension().unwrap(),
+            "Webpage cannot be constructed from a non-htm source."
+        );
 
         let file_content = match fs::read_to_string(&src_path) {
             Ok(val) => val,
-            Err(e) => panic!("error reading file: {}", e)
+            Err(e) => panic!("error reading file: {}", e),
         };
 
         let mut path = String::from(src_path.file_stem().unwrap().to_str().unwrap());
@@ -102,15 +106,15 @@ impl Webpage {
         }
     }
 
-    // Consumes the Webpage and converts its content into the built version of the webpage 
-    // containing html header, navigation, and other page features. 
+    // Consumes the Webpage and converts its content into the built version of the webpage
+    // containing html header, navigation, and other page features.
     fn build(self, dest_dir: &Path) {
         let mut content = String::new();
 
         // add html header to top of the file
         content.push_str("<!DOCTYPE html><html lang='en'><head>");
         content.push_str(&format!("<title>andrew straus - {}</title>", self.name()));
-        content.push_str("<meta name='description' content='welcome to me, andrew straus. this is my resume, portfolio, and personal showcase space. please take a look around. this is me saying welcome from the etherial plane of existance.'> <link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> <link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> <link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> <link rel='manifest' href='../site.webmanifest'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <link href='../styles/style.css' rel='stylesheet'> <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> </head> <body>");
+        content.push_str("<meta name='description' content='welcome to andy land! this is a very personal website where showcase the many interesting facets of my life!'> <link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> <link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> <link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> <link rel='manifest' href='../site.webmanifest'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <link href='../styles/style.css' rel='stylesheet'> <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> </head> <body>");
         // navigation bar
         content.push_str(NAV);
 
@@ -121,7 +125,11 @@ impl Webpage {
         content.push_str("</body>");
         content.push_str(FOOTER);
 
-        println!("Writing {} to {}", self.name(), dest_dir.join(&self.filepath).display());
+        println!(
+            "Writing {} to {}",
+            self.name(),
+            dest_dir.join(&self.filepath).display()
+        );
 
         // create a new file with that file name in ../site/
         fs::write(dest_dir.join(&self.filepath), content.into_bytes()).unwrap();
@@ -137,7 +145,7 @@ fn generate_index(pages: &Vec<Webpage>, dest_dir: &Path) {
     println!("Generating site index...");
     let mut index = String::new();
     index.push_str("<h2>Site Index</h2><ul>");
-   
+
     for webpage in pages {
         index.push_str("<li><a href='");
         index.push_str(webpage.filepath.to_str().unwrap());
@@ -168,14 +176,16 @@ fn main() {
     };
 
     // Convert all the files in the src_directory into Webpage objects
-    let mut pages: Vec<Webpage> = src_dir.map(|file| Webpage::from_src(file.unwrap().path())).collect();
+    let mut pages: Vec<Webpage> = src_dir
+        .map(|file| Webpage::from_src(file.unwrap().path()))
+        .collect();
     pages.sort();
 
     let site_dir = Path::new("../site/");
 
     // Build the index page where all webpages are accessible
     generate_index(&pages, &site_dir);
-  
+
     println!("Generating site pages...");
     // Build all the pages of the site
     for webpage in pages {
