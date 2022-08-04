@@ -34,7 +34,7 @@ const NAV: &str = "
 </li>
 
 <li class='item'>
-<a href='https://twitter.com/thickfatherandy'><img src='../content/twitter.png'>tweetsers</a>
+<a href='https://twitter.com/andii-online'><img src='../content/twitter.png'>tweetsers</a>
 </li>
 
 </ul>
@@ -56,7 +56,7 @@ const NAV: &str = "
 const FOOTER: &str = "
 <footer>
 <p>
-<a href='home.html'>andrew straus</a>
+<a href='home.html'>andii land</a>
  © 2022
 <a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
 <a href ='https://github.com/andrewstraus99/me'> *website src</a>
@@ -113,8 +113,8 @@ impl Webpage {
 
         // add html header to top of the file
         content.push_str("<!DOCTYPE html><html lang='en'><head>");
-        content.push_str(&format!("<title>andrew straus - {}</title>", self.name()));
-        content.push_str("<meta name='description' content='welcome to andy land! this is a very personal website where showcase the many interesting facets of my life!'> <link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> <link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> <link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> <link rel='manifest' href='../site.webmanifest'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <link href='../styles/style.css' rel='stylesheet'> <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> </head> <body>");
+        content.push_str(&format!("<title>andii land - {}</title>", self.name()));
+        content.push_str("<meta name='description' content='welcome to andii land! this is a very personal website where showcase the many interesting facets of my life!'> <link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> <link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> <link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> <link rel='manifest' href='../site.webmanifest'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> <link href='../styles/style.css' rel='stylesheet'> <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> </head> <body>");
         // navigation bar
         content.push_str(NAV);
 
