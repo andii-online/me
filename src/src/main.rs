@@ -4,26 +4,26 @@ use std::path::{Path, PathBuf};
 //TODO: move this to its own file
 const NAV: &str = "
 <nav id='menu'>
-<div class='home'><a href='home.html'><img src='../content/home.png'></a></div>
+<div class='home'><a href='home.html'><img src='../content/home.png' loading='lazy'></a></div>
 <ul>
 <li class='category'>
 <h3>playground</h3>
 <ul>
 
 <li class='item'>
-<a href='about.html'><img src='../content/about.png'>about</a>
+<a href='about.html'><img src='../content/about.png' loading='lazy'>about</a>
 </li>
 
 <li class='item'>
-<a href='thoughts.html'><img src='../content/thoughts.png'>thoughts</a>
+<a href='thoughts.html'><img src='../content/thoughts.png' loading='lazy'>thoughts</a>
 </li>
 
 <li class='item'>
-<a href='projects.html'><img src='../content/projects.png'>projects</a>
+<a href='projects.html'><img src='../content/projects.png' loading='lazy'>projects</a>
 </li>
 
 <li class='item'>
-<a href='contact.html'><img src='../content/contact.png'>contact</a>
+<a href='contact.html'><img src='../content/contact.png' loading='lazy'>contact</a>
 </li>
 
 </ul>
@@ -34,11 +34,11 @@ const NAV: &str = "
 <ul>
 
 <li class='item'>
-<a href='https://radlynn.itch.io'><img src='../content/itch.png'>itch.io</a>
+<a href='https://radlynn.itch.io'><img src='../content/itch.png' loading='lazy'>itch.io</a>
 </li>
 
 <li class='item'>
-<a href='https://twitter.com/andii-online'><img src='../content/twitter.png'>tweetsers</a>
+<a href='https://twitter.com/andii-online'><img src='../content/twitter.png' loading='lazy'>tweetsers</a>
 </li>
 
 </ul>
@@ -48,7 +48,7 @@ const NAV: &str = "
 <h3>meta</h3>
 <ul>
 <li class='item'>
-<a href='index.html'><img src='../content/index.png'>index</a>
+<a href='index.html'><img src='../content/index.png' loading='lazy'>index</a>
 </li>
 </ul>
 </li>
