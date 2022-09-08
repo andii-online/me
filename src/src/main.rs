@@ -15,6 +15,10 @@ const NAV: &str = "
 </li>
 
 <li class='item'>
+<a href='thoughts.html'><img src='../content/thoughts.png'>thoughts</a>
+</li>
+
+<li class='item'>
 <a href='projects.html'><img src='../content/projects.png'>projects</a>
 </li>
 
