@@ -51,9 +51,9 @@ nav {
   background: #3d3a5e;
   display: flex;
   flex-direction: column;
-  padding: 30px;
-  float: left;
-  width: 250px;
+  padding: 10px; 
+  float: center;
+  width: 150px;
   height: 100%;
   overflow-y: auto; 
 }
@@ -93,7 +93,7 @@ nav ul img {
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  width: 70%;
+  width: 100%;
   padding-bottom: 10px;
 }
 
