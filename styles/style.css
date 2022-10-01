@@ -16,12 +16,6 @@ img {
   user-select: none;
   }
 
-a:hover {
-  background-color: #7da8d2;
-  color: white;
-  text-decoration: none;
-}
-
 
 * {
   margin: 0;
@@ -158,15 +152,6 @@ main a.project-group img {
   height: 300px;
 }
 
-main a.project-group:hover img {
-    width: 210px;
-    height: 300px;
-}
-
-main a.project-group:hover {
-  text-decoration: none;
-}
-
 main img.home {
   display: block;
   margin-left: auto;
@@ -198,11 +183,6 @@ footer a {
   color: #222034;
   font-weight: normal;
   text-decoration: underline;
-}
-
-footer a:hover {
-  background: white;
-  color: #7da8d2;
 }
 
 @media (max-width: 1100px) {
@@ -312,10 +292,6 @@ footer a:hover {
     height: 36vw;
   }
 
-  main a.project-group:hover {
-    text-decoration: none;
-  }
-
   /* ------------ FOOTER ------------*/
   footer {
     position: relative;
@@ -328,7 +304,3 @@ footer a:hover {
     background: #7da8d2;
   }
 
-  footer a:hover {
-    background: white;
-    color: #7da8d2;
-  }
