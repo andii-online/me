@@ -179,6 +179,10 @@ footer {
   background: #7da8d2;
 }
 
+footer p {
+  display: inline;
+}
+
 footer a {
   color: #222034;
   font-weight: normal;

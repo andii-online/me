@@ -2,7 +2,10 @@ use std::path::PathBuf;
 use std::io::Read;
 use std::path::Path;
 use std::fs;
-use std::fs::{DirEntry, File};
+use std::fs::{DirEntry, File, Metadata};
+use std::time::SystemTime;
+use chrono::offset::Utc;
+use chrono::DateTime;
 
 pub const SITE_NAME: &str = "andii land";
 
@@ -10,16 +13,19 @@ pub const SITE_NAME: &str = "andii land";
 pub struct WebPageFile {
     pub file_path: PathBuf, // idk about having this be public :/
     file: File,
+    metadata: Metadata,
 }
 
 impl WebPageFile {
     pub fn from_file(dir_entry: DirEntry) -> Result<WebPageFile, &'static str> {
         let file_path = dir_entry.path();
         let file = File::open(&file_path).unwrap();
+        let metadata = fs::metadata(&file_path).unwrap();
 
         Ok(WebPageFile {
             file_path, 
             file,
+            metadata,
         })
     }
 }
@@ -29,6 +35,7 @@ impl WebPageFile {
 pub struct WebPage {
     name: String,
     content: String,
+    date_edited: DateTime<Utc>,
 }
 
 impl WebPage {
@@ -42,17 +49,24 @@ impl WebPage {
             page_file.file_path.file_stem().unwrap().to_str().unwrap()
         );
 
+        let system_time = page_file.metadata.modified().unwrap();
+        let date_edited: DateTime<Utc> = system_time.into();
+
         Ok(WebPage {
             name,
             content: file_contents,
+            date_edited,
         })
     }
 
     /// Converts a String into a WebPage
     pub fn from_string(name: String, content: String) -> WebPage {
+        let date_edited: DateTime<Utc> = SystemTime::now().into();
         WebPage {
             name,
             content,
+            date_edited, // while this is kindof correct, the date should only
+                         // be changed when the content of the page changes.
         }
     }
 
@@ -69,7 +83,7 @@ impl WebPage {
         content.push_str(&self.content);
         content.push_str("</main>\n");
         content.push_str("</body>\n");
-        content.push_str(FOOTER);
+        content.push_str(&self.get_footer());
 
         println!(
             "Writing {} to {}",
@@ -105,6 +119,27 @@ impl WebPage {
 </head>\n", SITE_NAME));
 
         content
+    }
+
+    fn get_footer(&self) -> String {
+        let mut footer = String::new();
+
+        footer.push_str("<footer>");
+        footer.push_str("<p>");
+        footer.push_str("<a href='home.html'>andii land</a>");
+        footer.push_str("© 2022");
+        footer.push_str("<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
+");
+        footer.push_str("<a href ='https://github.com/andrewstraus99/me'> *website src</a>");
+        footer.push_str("</p>");
+        footer.push_str("<p>");
+        footer.push_str("<span style='float:right'>");
+        footer.push_str(format!("edited on {}", self.date_edited.format("%a %b %e %T %Y")).as_str());
+        footer.push_str("</span>");
+        footer.push_str("</p>");
+        footer.push_str("</footer>");
+
+        footer
     }
 }
 
@@ -163,13 +198,3 @@ pub const NAV: &str = "
 </nav>
 ";
 
-pub const FOOTER: &str = "
-<footer>
-<p>
-<a href='home.html'>andii land</a>
- © 2022
-<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
-<a href ='https://github.com/andrewstraus99/me'> *website src</a>
-</p>
-</footer>
-";
