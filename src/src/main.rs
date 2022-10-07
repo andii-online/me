@@ -31,7 +31,7 @@ fn generate_index(pages: &Vec<WebPageFile>, dest_dir: &Path) -> Result<SiteIndex
     index.push_str("</ul>");
 
     // Build our index WebPage
-    WebPage::from_string(String::from("index.html"), index).build(&dest_dir).unwrap();
+    WebPage::from_string(String::from("index"), index).build(&dest_dir).unwrap();
 
     Ok(SiteIndex {
         pages: index_pages,
