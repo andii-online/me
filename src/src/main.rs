@@ -57,14 +57,12 @@ fn main() {
     };
 
     // Convert all the DirEntries in the src_directory into WebPageFiles
-    let files: Vec<WebPageFile> = src_dir
+    let mut files: Vec<WebPageFile> = src_dir
         .map(|entry| WebPageFile::from_file(entry.unwrap()).unwrap())
         .collect();
 
+    files.sort_by(|a, b| a.file_path.cmp(&b.file_path));
     let site_dir = Path::new("../site/");
-
-    // Build the index page where all WebPages are accessible
-    // TODO: pass generated index to pages to create links
     let _ = generate_index(&files, &site_dir);
 
     // Convert the files into pages
