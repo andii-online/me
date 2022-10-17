@@ -153,9 +153,6 @@ main a.project-group img {
 }
 
 main img.home {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
   height: auto;
   max-width: 100%;

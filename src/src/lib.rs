@@ -78,6 +78,7 @@ impl WebPage {
         content.push_str("<body>\n");
         // navigation bar
         content.push_str(NAV);
+        content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
         // page content
         content.push_str("<main>\n");
         content.push_str(&self.content);
