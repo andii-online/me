@@ -180,7 +180,7 @@ pub const NAV: &str = "
 </li>
 
 <li class='item'>
-<a href='https://twitter.com/andii-online'><img src='../content/twitter.png' loading='lazy'>tweetsers</a>
+<a href='https://twitter.com/andii_online'><img src='../content/twitter.png' loading='lazy'>tweetsers</a>
 </li>
 
 </ul>
