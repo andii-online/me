@@ -20,7 +20,7 @@ fn generate_index(pages: &Vec<WebPageFile>, dest_dir: &Path) -> Result<SiteIndex
 
     for web_page in pages {
         index.push_str("<li><a href='");
-        index.push_str(web_page.file_path.to_str().unwrap());
+        index.push_str(web_page.file_path.with_extension("html").file_name().unwrap().to_str().unwrap());
         index.push_str("'>");
         index.push_str(web_page.file_path.file_stem().unwrap().to_str().unwrap());
         index.push_str("</a></li>");
