@@ -45,7 +45,7 @@ fn main() {
     // Flow
     // Go through all of the files in pages/
     // .htm -> load contents -> paste s");
-    let pages_path = Path::new("../site/");
+    let pages_path = Path::new("../pages/");
     let site_dir = Path::new("../site/");
 
     if !pages_path.exists() {
