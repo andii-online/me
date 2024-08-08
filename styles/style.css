@@ -1,19 +1,23 @@
-@font-face { font-family: berkeley-mono; src: url('berkeley-mono/WEB/BerkeleyMono-Regular.woff'); }
+@font-face {
+    font-family: 'Berkeley Mono';
+    src: url('berkeley-mono/WEB/BerkeleyMono-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Berkeley Mono';
+    src: url('berkeley-mono/WEB/BerkeleyMono-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
 
 html {
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
-    font-family: berkeley-mono;
+    font-family: 'Berkeley Mono', monospace;
     height: 100%;
-}
-
-img {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
 }
 
 body {
@@ -21,29 +25,33 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    margin: 0;
     flex-direction: column;
+}
+
+img {
+    user-select: none;
 }
 
 header {
     width: 60%;
+    margin: 0 auto;
     padding: 0;
-    margin: 0;
-    justify-content: bottom;
-    align-items: bottom;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
     border-radius: 10px 10px 0 0;
 }
 
-header.h1 {
-    align-self: flex-end;
+h1 {
+    font-size: 32px;
 }
-
 
 main {
     width: 60%;
     height: 70%;
-    overflow-x: clip;
-    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 main.inner {
@@ -51,15 +59,16 @@ main.inner {
     max-width: 100%;
     overflow-wrap: break-word;
     display: inline-block;
+}
 
-    .back {
-        padding: 30px;
-    }
+main.inner .back {
+    padding: 30px;
 }
 
 table {
     table-layout: fixed;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 th {
@@ -67,17 +76,18 @@ th {
 }
 
 thead th:nth-child(1) {
-  width: 10%;
+    width: 10%;
 }
 
 thead th:nth-child(2) {
-  width: 30%;
+    width: 30%;
 }
 
 a {
     font-weight: bold;
     color: black;
     text-decoration: underline;
+    transition: color 0.3s, background-color 0.3s;
 }
 
 a:hover {
@@ -88,18 +98,14 @@ a:hover {
 
 .indent {
     max-width: 100%;
-    margin: 0px;
-    padding: 0px 0px 0px 30px;
+    margin: 0;
+    padding-left: 30px;
 }
 
 .mini-indent {
     max-width: 100%;
-    margin: 0px;
-    padding: 0px 0px 0px 15px;
-}
-
-h1 {
-    font-size: 32;
+    margin: 0;
+    padding-left: 15px;
 }
 
 ul {
@@ -113,14 +119,14 @@ li {
 
 .silly {
     width: 100%;
+}
 
-    * {
-        margin: 5px;
-    }
+.silly * {
+    margin: 5px;
+}
 
-    b {
-        color: gray;
-    }
+.silly b {
+    color: gray;
 }
 
 footer {
@@ -133,15 +139,13 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-
-
-    .left {
-        margin-right: auto;
-        padding-left: 10px;
-    }
-
-    .right {
-        padding-right: 10px;
-    }
 }
 
+footer .left {
+    margin-right: auto;
+    padding-left: 10px;
+}
+
+footer .right {
+    padding-right: 10px;
+}
