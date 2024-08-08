@@ -90,12 +90,35 @@ li {
     margin: 10px;
 }
 
+.silly {
+    * {
+        margin: 5px;
+    }
+
+    b {
+        color: gray;
+    }
+}
+
 footer {
-    border: 3px solid red;
-    display: block;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
+    max-width: 100%;
     height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    .left {
+        margin-right: auto;
+        padding-left: 10px;
+    }
+
+    .right {
+        padding-right: 10px;
+    }
 }
+
