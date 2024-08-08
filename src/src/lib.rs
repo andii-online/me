@@ -78,16 +78,16 @@ impl WebPage {
         content.push_str("<body>\n");
         content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
         content.push_str("<main>\n");
-        content.push_str("<div class='inner'>")
-        content.push_str("<div class='indent'>")
+        content.push_str("<div class='inner'>");
+        content.push_str("<div class='indent'>");
         if self.name != "home" {
-            content.push_str("<div class='mini-indent'>")
-            content.push_str("<a href='home.html'>back to home</a>")
-            content.push_str("</div>")
+            content.push_str("<div class='mini-indent'>");
+            content.push_str("<a href='home.html'>back to home</a>");
+            content.push_str("</div>");
         }
         content.push_str(&self.content);
-        content.push_str("</div>")
-        content.push_str("</div>")
+        content.push_str("</div>");
+        content.push_str("</div>");
         content.push_str("</main>\n");
         content.push_str(&self.get_footer());
         content.push_str("</body>\n");
