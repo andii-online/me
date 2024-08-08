@@ -91,8 +91,10 @@ impl WebPage {
             content.push_str("</div>");
         }
         content.push_str("<div class='indent'>");
-        content.push_str(format!("<h1>{}</h1>", &self.name).as_str());
-        content.push_str("<div class='indent'>");
+        if self.name != "home" {
+            content.push_str(format!("<h1>{}</h1>", &self.name).as_str());
+            content.push_str("<div class='indent'>");
+        }
         content.push_str(&self.content);
         content.push_str("</div>");
         content.push_str("</div>");
