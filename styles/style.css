@@ -49,11 +49,15 @@ body {
 header {
     width: 60%;
     margin: 0 auto;
-    padding: 0;
+    padding: 10px 0;
     display: flex;
+    position: sticky;
+    top: 0;
     justify-content: flex-start;
     align-items: flex-end;
     border-radius: 10px 10px 0 0;
+    z-index: 1000;
+    background-color: white;
 }
 
 h1 {
@@ -195,6 +199,46 @@ footer .right {
         margin: 3px;
     }
 
+    /* Responsive Table */
+    table {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    td {
+        display: block;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        padding: 10px;
+    }
+
+    thead th:nth-child(1) {
+        padding-left: 15px;
+    }
+
+    thead th:nth-child(2) {
+        padding-right: 30px;
+    }
+
+    td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        display: block;
+        margin-bottom: 5px;
+    }
+}
     footer {
         padding: 10px;
         flex-direction: column;
