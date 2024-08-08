@@ -40,19 +40,23 @@ pub struct WebPage {
     date_edited: FileTime,
 }
 
-fn replace_file_links(input: &str, generate_link: fn(&str) -> String) -> String {
-    // Create a regular expression to match {file_name}
-    let re = Regex::new(r"\{([^}]+)\}").unwrap();
+fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> String) -> String {
+    // regex to match {file_name, optional[pretty_name]}
+    let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
     let result = re.replace_all(input, |caps: &regex::Captures| {
         let file_name = &caps[1];
-        generate_link(file_name)
+        let pretty_name = caps.get(2).map(|m| m.as_str());
+        generate_link(file_name, pretty_name)
     });
 
     result.to_string()
 }
 
-fn generate_link(file_name: &str) -> String {
-    format!("<a href='{}.html'>{}</a>", file_name, file_name)
+fn generate_link(file_name: &str, pretty_name: Option<&str>) -> String {
+    match pretty_name {
+        Some(name) => format!("<a href='{}.html'>{}</a>", file_name, name),
+        None => format!("<a href='{}.html'>{}</a>", file_name, file_name),
+    }
 }
 
 impl WebPage {
