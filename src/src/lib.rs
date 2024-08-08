@@ -4,6 +4,7 @@ use std::path::Path;
 use std::fs;
 use std::fs::{DirEntry, File, Metadata};
 use std::time::SystemTime;
+use filetime::FileTime;
 use chrono::offset::Utc;
 use chrono::DateTime;
 
@@ -35,7 +36,7 @@ impl WebPageFile {
 pub struct WebPage {
     name: String,
     content: String,
-    date_edited: DateTime<Utc>,
+    date_edited: FileTime,
 }
 
 impl WebPage {
@@ -49,8 +50,7 @@ impl WebPage {
             page_file.file_path.file_stem().unwrap().to_str().unwrap()
         );
 
-        let system_time = page_file.metadata.modified().unwrap();
-        let date_edited: DateTime<Utc> = system_time.into();
+        let date_edited = FileTime::from_last_modification_time(&page_file.metadata);
 
         Ok(WebPage {
             name,
@@ -61,13 +61,19 @@ impl WebPage {
 
     /// Converts a String into a WebPage
     pub fn from_string(name: String, content: String) -> WebPage {
-        let date_edited: DateTime<Utc> = SystemTime::now().into();
+        let date_edited: FileTime = FileTime::now();
         WebPage {
             name,
             content,
             date_edited, // while this is kindof correct, the date should only
                          // be changed when the content of the page changes.
         }
+    }
+
+    pub fn get_formatted_time(&self) -> Result<String, Box<dyn std::error::Error>> {
+        let system_time = SystemTime::UNIX_EPOCH + std::time::Duration::from_secs(self.date_edited.unix_seconds() as u64);
+        let datetime: DateTime<Utc> = system_time.into();
+        Ok(datetime.format("%a %b %e %T %Y").to_string())
     }
 
     /// Consumes the WebPage and converts its content into the built version of the WebPage
@@ -142,7 +148,7 @@ impl WebPage {
         footer.push_str("</div>");
         footer.push_str("<div class='right'>");
         footer.push_str("<p>");
-        footer.push_str(format!("edited on {}", self.date_edited.format("%a %b %e %T %Y")).as_str());
+        footer.push_str(format!("edited on {}", self.get_formatted_time().unwrap()).as_str());
         footer.push_str("</p>");
         footer.push_str("</div>");
         footer.push_str("</footer>");

@@ -51,6 +51,10 @@ main.inner {
     max-width: 100%;
     overflow-wrap: break-word;
     display: inline-block;
+
+    .back {
+        padding: 30px;
+    }
 }
 
 a {
