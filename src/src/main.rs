@@ -45,7 +45,8 @@ fn main() {
     // Flow
     // Go through all of the files in pages/
     // .htm -> load contents -> paste s");
-    let pages_path = Path::new("./pages/");
+    let pages_path = Path::new("../site/");
+    let site_dir = Path::new("../site/");
 
     if !pages_path.exists() {
         panic!("No pages/ directory found!");
@@ -62,7 +63,6 @@ fn main() {
         .collect();
 
     files.sort_by(|a, b| a.file_path.cmp(&b.file_path));
-    let site_dir = Path::new("../site/");
     let _ = generate_index(&files, &site_dir);
 
     // Convert the files into pages
