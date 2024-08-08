@@ -149,3 +149,53 @@ footer .left {
 footer .right {
     padding-right: 10px;
 }
+
+/* Media Query for screens under 400px */
+@media (max-width: 400px) {
+    html {
+        font-size: 14px; /* Smaller base font size for better readability */
+    }
+
+    header, main {
+        width: 90%; /* Use more screen width on small devices */
+    }
+
+    body {
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 10px;
+        margin-bottom: auto;
+    }
+
+    h1 {
+        font-size: 24px; /* Reduce heading size */
+    }
+
+    main {
+        height: auto; /* Allow main to adjust height based on content */
+    }
+
+    .indent {
+        padding-left: 15px; /* Reduce padding for indents */
+    }
+
+    .mini-indent {
+        padding-left: 10px; /* Further reduce padding */
+    }
+
+    .silly * {
+        margin: 3px; /* Reduce margin for inner elements */
+    }
+
+    footer {
+        position: static; /* Remove fixed positioning */
+        width: 100%;
+        flex-direction: column; /* Stack items vertically */
+        padding: 10px; /* Add some padding */
+        margin-top: 10px; /* Add margin for spacing */
+    }
+
+    footer .left, footer .right {
+        padding: 5px; /* Reduce padding */
+    }
+}
