@@ -7,7 +7,7 @@ use std::time::SystemTime;
 use chrono::offset::Utc;
 use chrono::DateTime;
 
-pub const SITE_NAME: &str = "andii land";
+pub const SITE_NAME: &str = "chloe land";
 
 /// Represents a source file for website pages
 pub struct WebPageFile {
@@ -76,15 +76,21 @@ impl WebPage {
         let mut content = String::new();
         content.push_str(&self.get_header());
         content.push_str("<body>\n");
-        // navigation bar
-        content.push_str(NAV);
         content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
-        // page content
         content.push_str("<main>\n");
+        content.push_str("<div class='inner'>")
+        content.push_str("<div class='indent'>")
+        if self.name != "home" {
+            content.push_str("<div class='mini-indent'>")
+            content.push_str("<a href='home.html'>back to home</a>")
+            content.push_str("</div>")
+        }
         content.push_str(&self.content);
+        content.push_str("</div>")
+        content.push_str("</div>")
         content.push_str("</main>\n");
-        content.push_str("</body>\n");
         content.push_str(&self.get_footer());
+        content.push_str("</body>\n");
 
         println!(
             "Writing {} to {}",
@@ -117,85 +123,30 @@ impl WebPage {
 <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
 <link href='../styles/style.css' rel='stylesheet'> 
 <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> 
-</head>\n", SITE_NAME));
+</head><header><h1>*chloe land</h1></header>\n", SITE_NAME));
 
         content
     }
 
     fn get_footer(&self) -> String {
         let mut footer = String::new();
-
         footer.push_str("<footer>");
+        footer.push_str("<div class='left'>");
         footer.push_str("<p>");
-        footer.push_str("<a href='home.html'>andii land</a>");
+        footer.push_str("<a href='home.html'>chloe land</a>");
         footer.push_str("© 2022");
         footer.push_str("<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
 ");
-        footer.push_str("<a href ='https://github.com/andrewstraus99/me'> *website src</a>");
+        footer.push_str("<a href ='https://github.com/andii-online/me'> *website src</a>");
         footer.push_str("</p>");
+        footer.push_str("</div>");
+        footer.push_str("<div class='right'>");
         footer.push_str("<p>");
-        footer.push_str("<span style='float:right'>");
         footer.push_str(format!("edited on {}", self.date_edited.format("%a %b %e %T %Y")).as_str());
-        footer.push_str("</span>");
         footer.push_str("</p>");
+        footer.push_str("</div>");
         footer.push_str("</footer>");
 
         footer
     }
 }
-
-pub const NAV: &str = "
-<nav id='menu'>
-<div class='home'><a href='home.html'><img src='../content/home.png' loading='lazy'></a></div>
-<ul>
-<li class='category'>
-<h3>playground</h3>
-<ul>
-
-<li class='item'>
-<a href='about.html'><img src='../content/about.png' loading='lazy'>about</a>
-</li>
-
-<li class='item'>
-<a href='thoughts.html'><img src='../content/thoughts.png' loading='lazy'>thoughts</a>
-</li>
-
-<li class='item'>
-<a href='projects.html'><img src='../content/projects.png' loading='lazy'>projects</a>
-</li>
-
-<li class='item'>
-<a href='contact.html'><img src='../content/contact.png' loading='lazy'>contact</a>
-</li>
-
-</ul>
-</li>
-
-<li class='category'>
-<h3>external links</h3>
-<ul>
-
-<li class='item'>
-<a href='https://radlynn.itch.io'><img src='../content/itch.png' loading='lazy'>itch.io</a>
-</li>
-
-<li class='item'>
-<a href='https://twitter.com/andii_online'><img src='../content/twitter.png' loading='lazy'>tweetsers</a>
-</li>
-
-</ul>
-</li>
-
-<li class='category'>
-<h3>meta</h3>
-<ul>
-<li class='item'>
-<a href='index.html'><img src='../content/index.png' loading='lazy'>index</a>
-</li>
-</ul>
-</li>
-
-</ul>
-</nav>
-";
-
