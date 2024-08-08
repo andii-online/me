@@ -95,6 +95,8 @@ li {
 }
 
 .silly {
+    width: 100%;
+
     * {
         margin: 5px;
     }

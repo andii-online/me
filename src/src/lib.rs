@@ -4,6 +4,7 @@ use std::path::Path;
 use std::fs;
 use std::fs::{DirEntry, File, Metadata};
 use std::time::SystemTime;
+use regex::Regex;
 use filetime::FileTime;
 use chrono::offset::Utc;
 use chrono::DateTime;
@@ -39,10 +40,24 @@ pub struct WebPage {
     date_edited: FileTime,
 }
 
+fn replace_file_links(input: &str, generate_link: fn(&str) -> String) -> String {
+    // Create a regular expression to match {file_name}
+    let re = Regex::new(r"\{([^}]+)\}").unwrap();
+    let result = re.replace_all(input, |caps: &regex::Captures| {
+        let file_name = &caps[1];
+        generate_link(file_name)
+    });
+
+    result.to_string()
+}
+
+fn generate_link(file_name: &str) -> String {
+    format!("<a href='{}.html'>{},</a>", file_name, file_name)
+}
+
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
     pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
-        //TODO: parse `file_contents` for links
         let mut file_contents = String::new();
         page_file.file.read_to_string(&mut file_contents).unwrap();
 
@@ -54,7 +69,7 @@ impl WebPage {
 
         Ok(WebPage {
             name,
-            content: file_contents,
+            content: replace_file_links(&file_contents, generate_link),
             date_edited,
         })
     }
