@@ -52,7 +52,7 @@ fn replace_file_links(input: &str, generate_link: fn(&str) -> String) -> String 
 }
 
 fn generate_link(file_name: &str) -> String {
-    format!("<a href='{}.html'>{},</a>", file_name, file_name)
+    format!("<a href='{}.html'>{}</a>", file_name, file_name)
 }
 
 impl WebPage {
