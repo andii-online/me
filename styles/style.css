@@ -57,6 +57,23 @@ main.inner {
     }
 }
 
+table {
+    table-layout: fixed;
+    margin-bottom: 30px;
+}
+
+th {
+    text-align: left;
+}
+
+thead th:nth-child(1) {
+  width: 10%;
+}
+
+thead th:nth-child(2) {
+  width: 30%;
+}
+
 a {
     font-weight: bold;
     color: black;
