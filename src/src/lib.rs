@@ -104,11 +104,6 @@ impl WebPage {
         content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
         content.push_str("<main>\n");
         content.push_str("<div class='inner'>");
-        if self.name != "home" {
-            content.push_str("<div class='mini-indent'>");
-            content.push_str("<a href='home.html'>back to home</a>");
-            content.push_str("</div>");
-        }
         content.push_str("<div class='indent'>");
         if self.name != "home" {
             content.push_str(format!("<h1>{}</h1>", &self.name).as_str());
@@ -139,8 +134,7 @@ impl WebPage {
 
     fn get_header(&self) -> String {
         let mut content = String::new();
-
-        content.push_str("<!DOCTYPE html><html lang='en'>");
+content.push_str("<!DOCTYPE html><html lang='en'>");
         content.push_str("<head>");
         content.push_str(&format!("<title>{} - {}</title>", SITE_NAME, self.name.clone()));
         // meta information could be moved elsewhere or standardized in some way...
@@ -153,7 +147,17 @@ impl WebPage {
 <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
 <link href='../styles/style.css' rel='stylesheet'> 
 <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> 
-</head><header><h1>*chloe land</h1></header>\n", SITE_NAME));
+</head>\n", SITE_NAME));
+        content.push_str("<header>");
+        content.push_str("<h1>");
+        content.push_str("*chloe land");
+        content.push_str("</h1>");
+        if self.name != "home" {
+            content.push_str("<div class='mini-indent'>");
+            content.push_str("<a href='home.html'>back to home</a>");
+            content.push_str("</div>");
+        }
+        content.push_str("</header>");
 
         content
     }

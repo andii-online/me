@@ -52,9 +52,10 @@ header {
     padding: 10px 0;
     display: flex;
     position: sticky;
+    flex-direction: column;
     top: 0;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-start; 
     border-radius: 10px 10px 0 0;
     z-index: 1000;
     background-color: white;
