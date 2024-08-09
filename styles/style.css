@@ -103,6 +103,11 @@ thead th:nth-child(2) {
     width: 30%;
 }
 
+tbody td:nth-child(3) {
+    font-weight: normal;
+    font-style: italic;
+}
+
 a {
     font-weight: bold;
     color: black;
@@ -151,9 +156,8 @@ li {
 
 footer {
     width: 100%;
-    max-width: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
     background-color: white;
     padding: 10px 0;
@@ -239,14 +243,17 @@ footer .right {
         display: block;
         margin-bottom: 5px;
     }
-}
+
     footer {
         padding: 10px;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     footer .left, footer .right {
-        padding: 5px;
+        margin: 0px;
+        padding: 0px;
     }
 }
 

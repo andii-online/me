@@ -102,18 +102,7 @@ impl WebPage {
         content.push_str(&self.get_header());
         content.push_str("<body>\n");
         content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
-        content.push_str("<main>\n");
-        content.push_str("<div class='inner'>");
-        content.push_str("<div class='indent'>");
-        if self.name != "home" {
-            content.push_str(format!("<h1>{}</h1>", &self.name).as_str());
-            content.push_str("<div class='indent'>");
-        }
-        content.push_str(&self.content);
-        content.push_str("</div>");
-        content.push_str("</div>");
-        content.push_str("</div>");
-        content.push_str("</main>\n");
+        content.push_str(&self.get_main());
         content.push_str(&self.get_footer());
         content.push_str("</body>\n");
 
@@ -136,22 +125,18 @@ impl WebPage {
         let mut content = String::new();
 content.push_str("<!DOCTYPE html><html lang='en'>");
         content.push_str("<head>");
-        content.push_str(&format!("<title>{} - {}</title>", SITE_NAME, self.name.clone()));
-        // meta information could be moved elsewhere or standardized in some way...
-        content.push_str(&format!("
-<meta name='description' content='welcome to {}, my personal website!!'> 
-<link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'> 
-<link rel='icon' type='image/png' sizes='32x32' href='../icons/favicon-32x32.png'> 
-<link rel='icon' type='image/png' sizes='16x16' href='../icons/favicon-16x16.png'> 
-<link rel='manifest' href='../site.webmanifest'> 
-<meta name='viewport' content='width=device-width, initial-scale=1.0'> 
-<link href='../styles/style.css' rel='stylesheet'> 
-<link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/hanken' type='text/css'> 
-</head>\n", SITE_NAME));
+        content.push_str(&format!("<title>{} - {}</title>", SITE_NAME, &self.name));
+        content.push_str(&format!("<meta name='description' content='welcome to {}!!'>", SITE_NAME));
+        content.push_str("<link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'>");
+        content.push_str("<link rel='manifest' href='../site.webmanifest'>");
+        content.push_str("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
+        content.push_str("<link href='../styles/style.css' rel='stylesheet'>");
+        content.push_str("</head>");
         content.push_str("<header>");
         content.push_str("<h1>");
         content.push_str("*chloe land");
         content.push_str("</h1>");
+        // add back to home nav for all non-home pages.
         if self.name != "home" {
             content.push_str("<div class='mini-indent'>");
             content.push_str("<a href='home.html'>back to home</a>");
@@ -162,15 +147,30 @@ content.push_str("<!DOCTYPE html><html lang='en'>");
         content
     }
 
+    fn get_main(&self) -> String {
+        let mut main = String::new();
+
+        main.push_str("<main>\n");
+        main.push_str("<div class='inner'>");
+        main.push_str("<div class='indent'>");
+        if self.name != "home" {
+            main.push_str(format!("<h1>{}</h1>", &self.name).as_str());
+            main.push_str("<div class='indent'>");
+        }
+        main.push_str(&self.content);
+        main.push_str("</div>");
+        main.push_str("</div>");
+        main.push_str("</div>");
+        main.push_str("</main>\n");
+
+        main 
+    }
+
     fn get_footer(&self) -> String {
         let mut footer = String::new();
         footer.push_str("<footer>");
         footer.push_str("<div class='left'>");
         footer.push_str("<p>");
-        footer.push_str("<a href='home.html'>chloe land</a>");
-        footer.push_str("© 2022");
-        footer.push_str("<a href ='https://creativecommons.org/licenses/by-nc-sa/4.0/'> by-nc-sa 4.0</a>
-");
         footer.push_str("<a href ='https://github.com/andii-online/me'> *website src</a>");
         footer.push_str("</p>");
         footer.push_str("</div>");
