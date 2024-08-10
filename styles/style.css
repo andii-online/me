@@ -26,15 +26,30 @@
     font-style: italic;
 }
 
+@media (prefers-color-scheme: light) {
+  * {
+    --main-bg-color: white;
+    --main-color: black;
+    --highlight-color: gray;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  * {
+    --main-bg-color: black;
+    --main-color: white;
+    --highlight-color: gray;
+  }
+}
+
+
 html {
     font-weight: normal;
     font-style: normal;
     font-family: 'Berkeley Mono', monospace;
     height: 100%;
     box-sizing: border-box;
-    --main-bg-color: white;
-    --main-color: black;
-    background-color: var(--main--color);
+    background-color: var(--main-bg-color);
     color: var(--main-color);
 }
 
@@ -166,7 +181,7 @@ li {
 }
 
 .silly b {
-    color: gray;
+    color: var(--highlight-color);
 }
 
 footer {
@@ -206,15 +221,16 @@ footer .right {
         margin: 0 auto;
     }
 
-    h1 {
-    }
-
     .indent {
-        padding-left: 15px;
+        padding-left: 0px;
     }
 
     .mini-indent {
-        padding-left: 10px;
+        padding-left: 0px;
+    }
+
+    ul {
+        padding-left: 0px;
     }
 
     .silly * {
@@ -240,7 +256,7 @@ footer .right {
     td {
         display: block;
         border: none;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px dotted #ddd;
         text-align: left;
         padding: 10px;
     }
