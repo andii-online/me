@@ -7,7 +7,7 @@ use std::time::SystemTime;
 use regex::Regex;
 use filetime::FileTime;
 use chrono::offset::Utc;
-use chrono::DateTime;
+use chrono::{DateTime, NaiveDateTime, Local};
 
 pub const SITE_NAME: &str = "chloe land";
 
@@ -32,14 +32,6 @@ impl WebPageFile {
     }
 }
 
-/// Represents a page on the website
-#[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct WebPage {
-    name: String,
-    content: String,
-    date_edited: FileTime,
-}
-
 fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> String) -> String {
     // regex to match {file_name, optional[pretty_name]}
     let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
@@ -59,6 +51,15 @@ fn generate_link(file_name: &str, pretty_name: Option<&str>) -> String {
     }
 }
 
+/// Represents a page on the website
+#[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct WebPage {
+    name: String,
+    content: String,
+    date_edited: DateTime<Utc>,
+}
+
+
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
     pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
@@ -69,7 +70,9 @@ impl WebPage {
             page_file.file_path.file_stem().unwrap().to_str().unwrap()
         );
 
-        let date_edited = FileTime::from_last_modification_time(&page_file.metadata);
+        let modified_time= FileTime::from_last_modification_time(&page_file.metadata);
+        let naive_time = NaiveDateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds());
+        let date_edited = DateTime::<Utc>::from_utc(naive_time, Utc);
 
         Ok(WebPage {
             name,
@@ -80,7 +83,7 @@ impl WebPage {
 
     /// Converts a String into a WebPage
     pub fn from_string(name: String, content: String) -> WebPage {
-        let date_edited: FileTime = FileTime::now();
+        let date_edited: DateTime<Utc> = Local::now().into();
         WebPage {
             name,
             content,
@@ -90,9 +93,7 @@ impl WebPage {
     }
 
     pub fn get_formatted_time(&self) -> Result<String, Box<dyn std::error::Error>> {
-        let system_time = SystemTime::UNIX_EPOCH + std::time::Duration::from_secs(self.date_edited.unix_seconds() as u64);
-        let datetime: DateTime<Utc> = system_time.into();
-        Ok(datetime.format("%a %b %e %T %Y").to_string())
+        Ok(self.date_edited.with_timezone(&Local).format("%I:%M%p, %b %e, %Y").to_string().to_lowercase())
     }
 
     /// Consumes the WebPage and converts its content into the built version of the WebPage
@@ -153,12 +154,7 @@ content.push_str("<!DOCTYPE html><html lang='en'>");
         main.push_str("<main>\n");
         main.push_str("<div class='inner'>");
         main.push_str("<div class='indent'>");
-        if self.name != "home" {
-            main.push_str(format!("<h1>{}</h1>", &self.name).as_str());
-            main.push_str("<div class='indent'>");
-        }
         main.push_str(&self.content);
-        main.push_str("</div>");
         main.push_str("</div>");
         main.push_str("</div>");
         main.push_str("</main>\n");
