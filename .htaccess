@@ -1,2 +1,2 @@
-ErrorDocument 404 /site/pagenotfound.html
+ErrorDocument 404 ./site/pagenotfound.html
 
