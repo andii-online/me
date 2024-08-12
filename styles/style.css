@@ -51,6 +51,7 @@ html {
     box-sizing: border-box;
     background-color: var(--main-bg-color);
     color: var(--main-color);
+    height: -webkit-fill-available;
 }
 
 *, *:before, *:after {
