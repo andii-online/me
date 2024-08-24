@@ -1,3 +1,5 @@
+#![recursion_limit = "512"]
+
 use std::path::PathBuf;
 use std::io::Read;
 use std::path::Path;
@@ -101,16 +103,18 @@ impl WebPage {
     /// Consumes the WebPage and converts its content into the built version of the WebPage
     /// containing html header, navigation, and other page features.
     pub fn build(self, dest_dir: &Path) -> Result<(), &'static str> {
-        let mut html = Html::builder();
-        html.push(self.get_head());
 
-        let mut body = Body::builder();
-        body.push(self.get_header());
-        body.push(self.get_main());
-        body.push(self.get_footer());
+        let body = Body::builder()
+            .push(self.get_header())
+            .push(self.get_main())
+            .push(self.get_footer())
+            .build();
 
-        html.push(body.build());
-        let content = html.build().to_string();
+        let html = Html::builder()
+            .lang("en")
+            .push(self.get_head())
+            .push(body)
+            .build();
 
        println!(
             "Writing {} to {}",
@@ -121,7 +125,7 @@ impl WebPage {
         // create a new file with that file name in ../site/
         fs::write(
             dest_dir.join(format!("{}.html", &self.name)), 
-            content.into_bytes()
+            html.to_string().into_bytes()
         ).unwrap();
 
         Ok(())
@@ -157,6 +161,9 @@ impl WebPage {
 
     fn get_head(&self) -> Head {
         let head = Head::builder()
+            .title(|title| title 
+                .text(format!("{} - {}", SITE_NAME, self.name))
+                )
             .meta(|meta| meta
                 .name("description")
                 .content(format!("welcome to {}!!", SITE_NAME))
@@ -176,9 +183,7 @@ impl WebPage {
                 )
             .link(|link| link
                 .href("../styles/style.css")
-                )
-            .title(|title| title 
-                .text(format!("{} - {}", SITE_NAME, self.name))
+                .rel("stylesheet")
                 )
             .build();
 
