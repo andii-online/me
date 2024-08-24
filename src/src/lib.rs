@@ -3,11 +3,14 @@ use std::io::Read;
 use std::path::Path;
 use std::fs;
 use std::fs::{DirEntry, File, Metadata};
-use std::time::SystemTime;
 use regex::Regex;
 use filetime::FileTime;
 use chrono::offset::Utc;
 use chrono::{DateTime, NaiveDateTime, Local};
+use html::root::{Html, Body};
+use html::content::{Header, Main, Footer};
+use html::text_content::Division;
+use html::metadata::Head;
 
 pub const SITE_NAME: &str = "chloe land";
 
@@ -87,8 +90,7 @@ impl WebPage {
         WebPage {
             name,
             content,
-            date_edited, // while this is kindof correct, the date should only
-                         // be changed when the content of the page changes.
+            date_edited, 
         }
     }
 
@@ -99,15 +101,18 @@ impl WebPage {
     /// Consumes the WebPage and converts its content into the built version of the WebPage
     /// containing html header, navigation, and other page features.
     pub fn build(self, dest_dir: &Path) -> Result<(), &'static str> {
-        let mut content = String::new();
-        content.push_str(&self.get_header());
-        content.push_str("<body>\n");
-        content.push_str("<!-----------------GENERATED DO NOT EDIT----------------->\n");
-        content.push_str(&self.get_main());
-        content.push_str(&self.get_footer());
-        content.push_str("</body>\n");
+        let mut html = Html::builder();
+        html.push(self.get_head());
 
-        println!(
+        let mut body = Body::builder();
+        body.push(self.get_header());
+        body.push(self.get_main());
+        body.push(self.get_footer());
+
+        html.push(body.build());
+        let content = html.build().to_string();
+
+       println!(
             "Writing {} to {}",
             self.name,
             dest_dir.join(&self.name).display()
@@ -122,60 +127,98 @@ impl WebPage {
         Ok(())
     }
 
-    fn get_header(&self) -> String {
-        let mut content = String::new();
-content.push_str("<!DOCTYPE html><html lang='en'>");
-        content.push_str("<head>");
-        content.push_str(&format!("<title>{} - {}</title>", SITE_NAME, &self.name));
-        content.push_str(&format!("<meta name='description' content='welcome to {}!!'>", SITE_NAME));
-        content.push_str("<link rel='apple-touch-icon' sizes='180x180' href='../icons/apple-touch-icon.png'>");
-        content.push_str("<link rel='manifest' href='../site.webmanifest'>");
-        content.push_str("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
-        content.push_str("<link href='../styles/style.css' rel='stylesheet'>");
-        content.push_str("</head>");
-        content.push_str("<header>");
-        content.push_str("<h1>");
-        content.push_str("*chloe land");
-        content.push_str("</h1>");
+    fn get_header(&self) -> Header {
+        let mut header = Header::builder();
+        let div = Division::builder()
+            .class("special")
+            .heading_1(|h1| h1
+                .anchor(|a| a
+                    .href("special.html")
+                    .text("*")
+                    )
+                )
+                .text(SITE_NAME)
+            .build();
+        header.push(div);
         // add back to home nav for all non-home pages.
         if self.name != "home" {
-            content.push_str("<div class='mini-indent'>");
-            content.push_str("<a href='home.html'>back to home</a>");
-            content.push_str("</div>");
+            let back_to_home = Division::builder()
+                .class("mini-indent")
+                .anchor(|a| a
+                    .href("home.html")
+                    .text("back to home")
+                    )
+                .build();
+            header.push(back_to_home);
         }
-        content.push_str("</header>");
-
-        content
+        
+        header.build()
     }
 
-    fn get_main(&self) -> String {
-        let mut main = String::new();
+    fn get_head(&self) -> Head {
+        let head = Head::builder()
+            .meta(|meta| meta
+                .name("description")
+                .content(format!("welcome to {}!!", SITE_NAME))
+                )
+            .link(|link| link
+                .rel("apple-touch-icon")
+                .sizes("180x180")
+                .href("../icons/apple-touch-icon.png")
+                )
+            .link(|link| link
+                .rel("manifest")
+                .href("../site.manifest")
+                )
+            .meta(|meta| meta
+                .name("viewport")
+                .content("width=device-width, initial-scale=1.0")
+                )
+            .link(|link| link
+                .href("../styles/style.css")
+                )
+            .title(|title| title 
+                .text(format!("{} - {}", SITE_NAME, self.name))
+                )
+            .build();
 
-        main.push_str("<main>\n");
-        main.push_str("<div class='inner'>");
-        main.push_str("<div class='indent'>");
-        main.push_str(&self.content);
-        main.push_str("</div>");
-        main.push_str("</div>");
-        main.push_str("</main>\n");
-
-        main 
+        head
     }
 
-    fn get_footer(&self) -> String {
-        let mut footer = String::new();
-        footer.push_str("<footer>");
-        footer.push_str("<div class='left'>");
-        footer.push_str("<p>");
-        footer.push_str("<a href ='https://github.com/andii-online/me'> *website src</a>");
-        footer.push_str("</p>");
-        footer.push_str("</div>");
-        footer.push_str("<div class='right'>");
-        footer.push_str("<p>");
-        footer.push_str(format!("edited on {}", self.get_formatted_time().unwrap()).as_str());
-        footer.push_str("</p>");
-        footer.push_str("</div>");
-        footer.push_str("</footer>");
+    fn get_main(&self) -> Main {
+        let main = Main::builder()
+            .division(|inner| inner 
+                .class("inner")
+                .division(|indent| indent
+                    .class("indent")
+                    .text(self.content.clone())
+                    )
+                )
+            .build();
+
+        main
+    }
+
+    fn get_footer(&self) -> Footer {
+        let gh_link = "https://github.com/andii-online/me";
+        let last_edited_msg = format!("edited on {}", self.get_formatted_time().unwrap());
+        let footer = Footer::builder()
+            .division(|div| div
+                .class("left")
+                .paragraph(|p| p
+                    .anchor(|a| a
+                        .text("*website src")
+                        .href(gh_link)
+                        )
+                    )
+                )
+            .division(|div| div
+                .class("right")
+                .paragraph(|p| p
+                    .text(last_edited_msg)
+                    )
+                )
+            .build();
 
         footer
     }
