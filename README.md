@@ -2,16 +2,10 @@
 - this is my personal website. it is meant to show off who i am as a
   person. i try to keep it honest and intimate, because i believe that genuine
   interaction is critical in the digital world.
-- pages generated with a rust program found in `/src` 
-
-# planned features
-- flesh out projects to have separate pages for each project
-- blog
-- recognize browser dark-mode and change style accordingly
-- fun web toys
+- pages generated with a rust program found in `/site-builder` 
 
 # to recompile
-after installing `cargo`, navigate to the `src` directory.
+after installing `cargo`, navigate to the `site-builder` directory.
 ```
 cargo run
 ```
