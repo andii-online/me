@@ -1,9 +1,9 @@
 #![recursion_limit = "512"]
 
-use me::{SITE_NAME, write_site};
-use me::index::get_site_index;
-use me::web_page::WebPage;
-use me::web_page_file::WebPageFile;
+use me_site_builder::{SITE_NAME, write_site};
+use me_site_builder::index::get_site_index;
+use me_site_builder::web_page::WebPage;
+use me_site_builder::web_page_file::WebPageFile;
 use std::fs;
 use std::path::Path;
 

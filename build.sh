@@ -1,7 +1,7 @@
 # build script for site
 touch site/
 
-cd src/
+cd site-builder/
 cargo run
 cd ..
 
