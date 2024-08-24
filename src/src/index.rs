@@ -1,41 +1,35 @@
 use crate::{WebPage, WebPageFile};
 
-/// Represents the index for the website.
-///
-/// Writes output to file `index.html`.
-pub struct SiteIndex {
-    pages: Vec<String>,
-}
+use html::content::Heading2;
+use html::inline_text::Anchor;
+use html::text_content::{Division, ListItem, UnorderedList};
 
-// Creates an index.html file in the site path
+/// Creates the special site index WebPage.
 pub fn get_site_index(pages: &Vec<WebPageFile>) -> WebPage {
-    println!("Generating site index...");
-    let mut index = String::new();
-    let mut index_pages: Vec<String> = Vec::new();
+    let mut index = Division::builder();
+    let title = Heading2::builder().text("Site Index").build();
+    index.push(title);
 
-    index.push_str("<h2>Site Index</h2><ul>");
-
+    let mut ul = UnorderedList::builder();
     for web_page in pages {
-        index.push_str("<li><a href='");
-        index.push_str(
-            web_page
-                .file_path
-                .with_extension("html")
-                .file_name()
-                .unwrap()
-                .to_str()
-                .unwrap(),
-        );
-        index.push_str("'>");
-        index.push_str(web_page.file_path.file_stem().unwrap().to_str().unwrap());
-        index.push_str("</a></li>");
-
-        index_pages.push(String::from(
-            web_page.file_path.file_stem().unwrap().to_str().unwrap(),
-        ));
+        let link_path = web_page
+            .file_path
+            .with_extension("html")
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .into_owned();
+        let path_content = web_page
+            .file_path
+            .file_stem()
+            .unwrap()
+            .to_string_lossy()
+            .into_owned();
+        let anchor = Anchor::builder().href(link_path).text(path_content).build();
+        let li = ListItem::builder().push(anchor).build();
+        ul.push(li);
     }
+    index.push(ul.build());
 
-    index.push_str("</ul>");
-
-    WebPage::from_string(String::from("index"), index)
+    WebPage::from_string(String::from("index"), index.build().to_string())
 }

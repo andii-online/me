@@ -1,16 +1,15 @@
-use std::path::PathBuf;
-use std::io::Read;
-use std::path::Path;
+use chrono::offset::Utc;
+use chrono::{DateTime, Local, NaiveDateTime};
+use filetime::FileTime;
+use html::content::{Footer, Header, Main};
+use html::metadata::Head;
+use html::root::{Body, Html};
+use html::text_content::Division;
+use regex::Regex;
 use std::fs;
 use std::fs::{DirEntry, File, Metadata};
-use regex::Regex;
-use filetime::FileTime;
-use chrono::offset::Utc;
-use chrono::{DateTime, NaiveDateTime, Local};
-use html::root::{Html, Body};
-use html::content::{Header, Main, Footer};
-use html::text_content::Division;
-use html::metadata::Head;
+use std::io::Read;
+use std::path::PathBuf;
 
 use crate::SITE_NAME;
 
@@ -28,7 +27,7 @@ impl WebPageFile {
         let metadata = fs::metadata(&file_path).unwrap();
 
         Ok(WebPageFile {
-            file_path, 
+            file_path,
             file,
             metadata,
         })
@@ -62,22 +61,24 @@ pub struct WebPage {
     pub date_edited: DateTime<Utc>,
 }
 
-
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
     pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
         let mut file_contents = String::new();
         match page_file.file.read_to_string(&mut file_contents) {
             Ok(_) => (),
-            Err(e) => panic!("While reading file {}, encountered error: {}", page_file.file_path.to_str().unwrap(), e),
+            Err(e) => panic!(
+                "While reading file {}, encountered error: {}",
+                page_file.file_path.to_str().unwrap(),
+                e
+            ),
         };
 
-        let name = String::from(
-            page_file.file_path.file_stem().unwrap().to_str().unwrap()
-        );
+        let name = String::from(page_file.file_path.file_stem().unwrap().to_str().unwrap());
 
-        let modified_time= FileTime::from_last_modification_time(&page_file.metadata);
-        let naive_time = NaiveDateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds());
+        let modified_time = FileTime::from_last_modification_time(&page_file.metadata);
+        let naive_time =
+            NaiveDateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds());
         let date_edited = DateTime::<Utc>::from_utc(naive_time, Utc);
 
         Ok(WebPage {
@@ -93,12 +94,17 @@ impl WebPage {
         WebPage {
             name,
             content,
-            date_edited, 
+            date_edited,
         }
     }
 
     pub fn get_formatted_time(&self) -> Result<String, Box<dyn std::error::Error>> {
-        Ok(self.date_edited.with_timezone(&Local).format("%I:%M%p, %b %e, %Y").to_string().to_lowercase())
+        Ok(self
+            .date_edited
+            .with_timezone(&Local)
+            .format("%I:%M%p, %b %e, %Y")
+            .to_string()
+            .to_lowercase())
     }
 
     /// Collects its content into the built version of the WebPage
@@ -117,63 +123,51 @@ impl WebPage {
             .build();
 
         html.to_string()
-
     }
 
     fn get_header(&self) -> Header {
         let mut header = Header::builder();
         let div = Division::builder()
             .class("special")
-            .heading_1(|h1| h1
-                .anchor(|a| a
-                    .href("special.html")
-                    .text("*")
-                    )
+            .heading_1(|h1| {
+                h1.anchor(|a| {
+                    a.href("index.html")
+                        .text("*")
+                })
                 .text(SITE_NAME)
-                )
+            })
             .build();
         header.push(div);
         // add back to home nav for all non-home pages.
         if self.name != "home" {
             let back_to_home = Division::builder()
                 .class("mini-indent")
-                .anchor(|a| a
-                    .href("home.html")
-                    .text("back to home")
-                    )
+                .anchor(|a| a.href("home.html").text("back to home"))
                 .build();
             header.push(back_to_home);
         }
-        
+
         header.build()
     }
 
     fn get_head(&self) -> Head {
         let head = Head::builder()
-            .title(|title| title 
-                .text(format!("{} - {}", SITE_NAME, self.name))
-                )
-            .meta(|meta| meta
-                .name("description")
-                .content(format!("welcome to {}!!", SITE_NAME))
-                )
-            .link(|link| link
-                .rel("apple-touch-icon")
-                .sizes("180x180")
-                .href("../icons/apple-touch-icon.png")
-                )
-            .link(|link| link
-                .rel("manifest")
-                .href("../site.manifest")
-                )
-            .meta(|meta| meta
-                .name("viewport")
-                .content("width=device-width, initial-scale=1.0")
-                )
-            .link(|link| link
-                .href("../styles/style.css")
-                .rel("stylesheet")
-                )
+            .title(|title| title.text(format!("{} - {}", SITE_NAME, self.name)))
+            .meta(|meta| {
+                meta.name("description")
+                    .content(format!("welcome to {}!!", SITE_NAME))
+            })
+            .link(|link| {
+                link.rel("apple-touch-icon")
+                    .sizes("180x180")
+                    .href("../icons/apple-touch-icon.png")
+            })
+            .link(|link| link.rel("manifest").href("../site.manifest"))
+            .meta(|meta| {
+                meta.name("viewport")
+                    .content("width=device-width, initial-scale=1.0")
+            })
+            .link(|link| link.href("../styles/style.css").rel("stylesheet"))
             .build();
 
         head
@@ -181,13 +175,11 @@ impl WebPage {
 
     fn get_main(&self) -> Main {
         let main = Main::builder()
-            .division(|inner| inner 
-                .class("inner")
-                .division(|indent| indent
-                    .class("indent")
-                    .text(self.content.clone())
-                    )
-                )
+            .division(|inner| {
+                inner
+                    .class("inner")
+                    .division(|indent| indent.class("indent").text(self.content.clone()))
+            })
             .build();
 
         main
@@ -197,21 +189,11 @@ impl WebPage {
         let gh_link = "https://github.com/andii-online/me";
         let last_edited_msg = format!("edited on {}", self.get_formatted_time().unwrap());
         let footer = Footer::builder()
-            .division(|div| div
-                .class("left")
-                .paragraph(|p| p
-                    .anchor(|a| a
-                        .text("*website src")
-                        .href(gh_link)
-                        )
-                    )
-                )
-            .division(|div| div
-                .class("right")
-                .paragraph(|p| p
-                    .text(last_edited_msg)
-                    )
-                )
+            .division(|div| {
+                div.class("left")
+                    .paragraph(|p| p.anchor(|a| a.text("*website src").href(gh_link)))
+            })
+            .division(|div| div.class("right").paragraph(|p| p.text(last_edited_msg)))
             .build();
 
         footer

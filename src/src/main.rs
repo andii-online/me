@@ -42,5 +42,5 @@ fn main() {
     pages.push(index);
     pages.sort();
 
-    write_site(&pages, &site_dir)
+    write_site(&pages, &site_dir);
 }

@@ -31,6 +31,7 @@
     --main-bg-color: white;
     --main-color: black;
     --highlight-color: gray;
+    --special: purple;
   }
 }
 
@@ -39,6 +40,7 @@
     --main-bg-color: black;
     --main-color: white;
     --highlight-color: gray;
+    --special: purple;
   }
 }
 
@@ -186,11 +188,23 @@ li {
     color: var(--highlight-color);
 }
 
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+.special a:hover {
+    color: var(--special);
+    background-color: var(--main-bg-color);
+}
+
 .special a {
     text-decoration: none;
     color: var(--main-color);
-    background-color: var(--main-bg-color);
+    background-color: None;
+
 }
+
 
 footer {
     width: 100%;

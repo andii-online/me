@@ -45,7 +45,7 @@ fn write_web_page(web_page: &WebPage, dest: &Path) -> std::io::Result<()> {
         &web_page.name,
         dest.join(&web_page.name).display()
     );
-    // create a new file with that file name in ../site/
+
     fs::write(
         dest.join(format!("{}.html", &web_page.name)),
         built_page.into_bytes(),
@@ -75,8 +75,6 @@ fn move_files_to_tmp(src_dir: &Path, tmp_dir: &Path) -> std::io::Result<Vec<Path
 
         let file_name = entry.file_name();
         let tmp_path = tmp_dir.join(&file_name);
-
-        // Move the file to the tmp directory
         fs::rename(&src_path, &tmp_path)?;
 
         moved_files.push(file_name.into());
@@ -89,8 +87,6 @@ fn restore_files(moved_files: &Vec<PathBuf>, src_dir: &Path, tmp_dir: &Path) -> 
     for file_name in moved_files {
         let tmp_path = tmp_dir.join(&file_name);
         let src_path = src_dir.join(&file_name);
-
-        // Move the file back to the original directory
         fs::rename(&tmp_path, &src_path)?;
     }
 
@@ -101,8 +97,6 @@ fn delete_all_files_in_dir(dir: &Path) -> std::io::Result<()> {
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
-
-        // Check if the entry is a file (not a directory)
         if path.is_file() {
             fs::remove_file(path)?;
         }
