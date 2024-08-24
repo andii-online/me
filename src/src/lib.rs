@@ -140,8 +140,8 @@ impl WebPage {
                     .href("special.html")
                     .text("*")
                     )
-                )
                 .text(SITE_NAME)
+                )
             .build();
         header.push(div);
         // add back to home nav for all non-home pages.
