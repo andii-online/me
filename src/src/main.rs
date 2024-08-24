@@ -1,10 +1,9 @@
 #![recursion_limit = "512"]
 
-mod index;
-
 use me::{SITE_NAME, write_site};
-use index::get_site_index;
-use me::web_page::{WebPage, WebPageFile};
+use me::index::get_site_index;
+use me::web_page::WebPage;
+use me::web_page_file::WebPageFile;
 use std::fs;
 use std::path::Path;
 

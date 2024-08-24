@@ -1,38 +1,15 @@
 use chrono::offset::Utc;
-use chrono::{DateTime, Local, NaiveDateTime};
+use chrono::{DateTime, Local};
 use filetime::FileTime;
 use html::content::{Footer, Header, Main};
 use html::metadata::Head;
 use html::root::{Body, Html};
 use html::text_content::Division;
 use regex::Regex;
-use std::fs;
-use std::fs::{DirEntry, File, Metadata};
-use std::io::Read;
-use std::path::PathBuf;
+
+use crate::web_page_file::WebPageFile;
 
 use crate::SITE_NAME;
-
-/// Represents a source file for website pages
-pub struct WebPageFile {
-    pub file_path: PathBuf, // idk about having this be public :/
-    pub file: File,
-    pub metadata: Metadata,
-}
-
-impl WebPageFile {
-    pub fn from_file(dir_entry: DirEntry) -> Result<WebPageFile, &'static str> {
-        let file_path = dir_entry.path();
-        let file = File::open(&file_path).unwrap();
-        let metadata = fs::metadata(&file_path).unwrap();
-
-        Ok(WebPageFile {
-            file_path,
-            file,
-            metadata,
-        })
-    }
-}
 
 fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> String) -> String {
     // regex to match {file_name, optional[pretty_name]}
@@ -64,12 +41,11 @@ pub struct WebPage {
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
     pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
-        let mut file_contents = String::new();
-        match page_file.file.read_to_string(&mut file_contents) {
-            Ok(_) => (),
+        let contents = match page_file.get_page_contents() {
+            Ok(val) => val,
             Err(e) => panic!(
                 "While reading file {}, encountered error: {}",
-                page_file.file_path.to_str().unwrap(),
+                page_file.get_file_name(),
                 e
             ),
         };
@@ -77,13 +53,11 @@ impl WebPage {
         let name = String::from(page_file.file_path.file_stem().unwrap().to_str().unwrap());
 
         let modified_time = FileTime::from_last_modification_time(&page_file.metadata);
-        let naive_time =
-            NaiveDateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds());
-        let date_edited = DateTime::<Utc>::from_utc(naive_time, Utc);
+        let date_edited = DateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds()).unwrap();
 
         Ok(WebPage {
             name,
-            content: replace_file_links(&file_contents, generate_link),
+            content: replace_file_links(&contents, generate_link),
             date_edited,
         })
     }
@@ -130,11 +104,8 @@ impl WebPage {
         let div = Division::builder()
             .class("special")
             .heading_1(|h1| {
-                h1.anchor(|a| {
-                    a.href("index.html")
-                        .text("*")
-                })
-                .text(SITE_NAME)
+                h1.anchor(|a| a.href("index.html").text("*"))
+                    .text(SITE_NAME)
             })
             .build();
         header.push(div);

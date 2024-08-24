@@ -1,6 +1,8 @@
 #![recursion_limit = "512"]
 
+pub mod index;
 pub mod web_page;
+pub mod web_page_file;
 
 use std::fs;
 use std::path::{Path, PathBuf};

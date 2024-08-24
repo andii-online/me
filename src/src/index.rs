@@ -1,4 +1,5 @@
-use crate::{WebPage, WebPageFile};
+use crate::web_page::WebPage;
+use crate::web_page_file::WebPageFile;
 
 use html::content::Heading2;
 use html::inline_text::Anchor;
