@@ -5,29 +5,34 @@ use html::content::{Footer, Header, Main};
 use html::metadata::Head;
 use html::root::{Body, Html};
 use html::text_content::Division;
+use html::inline_text::Anchor;
 use regex::Regex;
 
 use crate::web_page_file::WebPageFile;
 
 use crate::SITE_NAME;
 
-fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> String) -> String {
+fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> Anchor) -> String {
     // regex to match {file_name, optional[pretty_name]}
     let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
     let result = re.replace_all(input, |caps: &regex::Captures| {
         let file_name = &caps[1];
         let pretty_name = caps.get(2).map(|m| m.as_str());
-        generate_link(file_name, pretty_name)
+        generate_link(file_name, pretty_name).to_string()
     });
 
     result.to_string()
 }
 
-fn generate_link(file_name: &str, pretty_name: Option<&str>) -> String {
+fn generate_link(file_name: &str, pretty_name: Option<&str>) -> Anchor {
+    let mut link = Anchor::builder();
+    let file_link = format!("{}.html", file_name.to_string());
     match pretty_name {
-        Some(name) => format!("<a href='{}.html'>{}</a>", file_name, name),
-        None => format!("<a href='{}.html'>{}</a>", file_name, file_name),
-    }
+        Some(name) => link.href(file_link).text(name.to_string()),
+        None => link.href(file_link).text(file_name.to_string()),
+    };
+
+    link.build()
 }
 
 /// Represents a page on the website
