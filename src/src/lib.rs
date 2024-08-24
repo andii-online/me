@@ -1,230 +1,112 @@
 #![recursion_limit = "512"]
 
-use std::path::PathBuf;
-use std::io::Read;
-use std::path::Path;
+pub mod web_page;
+
 use std::fs;
-use std::fs::{DirEntry, File, Metadata};
-use regex::Regex;
-use filetime::FileTime;
-use chrono::offset::Utc;
-use chrono::{DateTime, NaiveDateTime, Local};
-use html::root::{Html, Body};
-use html::content::{Header, Main, Footer};
-use html::text_content::Division;
-use html::metadata::Head;
+use std::path::{Path, PathBuf};
+use web_page::WebPage;
 
 pub const SITE_NAME: &str = "chloe land";
 
-/// Represents a source file for website pages
-pub struct WebPageFile {
-    pub file_path: PathBuf, // idk about having this be public :/
-    file: File,
-    metadata: Metadata,
-}
-
-impl WebPageFile {
-    pub fn from_file(dir_entry: DirEntry) -> Result<WebPageFile, &'static str> {
-        let file_path = dir_entry.path();
-        let file = File::open(&file_path).unwrap();
-        let metadata = fs::metadata(&file_path).unwrap();
-
-        Ok(WebPageFile {
-            file_path, 
-            file,
-            metadata,
-        })
+pub fn write_site(pages: &Vec<WebPage>, site_dir: &Path) {
+    let tmp_dir = Path::new(".tmp/");
+    let moved_files = match move_files_to_tmp(site_dir, tmp_dir) {
+        Ok(val) => Some(val),
+        Err(e) => {
+            eprintln!("Error while collecting old site: {}", e);
+            None 
+        },
+    };
+    println!("Generating site pages...");
+    for web_page in pages {
+        match write_web_page(&web_page, &site_dir) {
+            Ok(()) => (),
+            Err(e) => {
+                eprintln!("While building site, page {} failed on error: {}", web_page.name, e);
+                delete_all_files_in_dir(site_dir).expect("Unable to clean dir while restoring.");
+                match &moved_files {
+                    Some(files) => {
+                        restore_files(files, site_dir, tmp_dir).expect("Failed to restore files.");
+                        println!("Old site restored.")
+                    },
+                    None => println!("Nothing to restore..."),
+                };
+            }
+        };
     }
+    fs::remove_dir_all(tmp_dir).unwrap();
 }
 
-fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> String) -> String {
-    // regex to match {file_name, optional[pretty_name]}
-    let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
-    let result = re.replace_all(input, |caps: &regex::Captures| {
-        let file_name = &caps[1];
-        let pretty_name = caps.get(2).map(|m| m.as_str());
-        generate_link(file_name, pretty_name)
-    });
-
-    result.to_string()
+// Consumes the Webpage and writes it to a file.
+fn write_web_page(web_page: &WebPage, dest: &Path) -> std::io::Result<()> {
+    let built_page = web_page.build();
+    println!(
+        "Writing {} to {}",
+        &web_page.name,
+        dest.join(&web_page.name).display()
+    );
+    // create a new file with that file name in ../site/
+    fs::write(
+        dest.join(format!("{}.html", &web_page.name)),
+        built_page.into_bytes(),
+    )
 }
 
-fn generate_link(file_name: &str, pretty_name: Option<&str>) -> String {
-    match pretty_name {
-        Some(name) => format!("<a href='{}.html'>{}</a>", file_name, name),
-        None => format!("<a href='{}.html'>{}</a>", file_name, file_name),
-    }
-}
+fn move_files_to_tmp(src_dir: &Path, tmp_dir: &Path) -> std::io::Result<Vec<PathBuf>> {
+    let mut moved_files = Vec::new();
 
-/// Represents a page on the website
-#[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct WebPage {
-    name: String,
-    content: String,
-    date_edited: DateTime<Utc>,
-}
-
-
-impl WebPage {
-    /// Constructs a new WebPage from an .htm source
-    pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
-        let mut file_contents = String::new();
-        page_file.file.read_to_string(&mut file_contents).unwrap();
-
-        let name = String::from(
-            page_file.file_path.file_stem().unwrap().to_str().unwrap()
-        );
-
-        let modified_time= FileTime::from_last_modification_time(&page_file.metadata);
-        let naive_time = NaiveDateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds());
-        let date_edited = DateTime::<Utc>::from_utc(naive_time, Utc);
-
-        Ok(WebPage {
-            name,
-            content: replace_file_links(&file_contents, generate_link),
-            date_edited,
-        })
+    if !tmp_dir.exists() {
+        match fs::create_dir(tmp_dir) {
+            Err(e) => {
+                eprintln!("Couldn't create tmp dir at: {} beacause error: {}", tmp_dir.to_str().unwrap(), e)
+            },
+            _ => (),
+        };
     }
 
-    /// Converts a String into a WebPage
-    pub fn from_string(name: String, content: String) -> WebPage {
-        let date_edited: DateTime<Utc> = Local::now().into();
-        WebPage {
-            name,
-            content,
-            date_edited, 
+    for entry in fs::read_dir(src_dir)? {
+        let entry = entry?;
+        let src_path = entry.path();
+
+        // Skip directories and the tmp directory itself
+        if src_path.is_dir() || src_path == tmp_dir {
+            continue;
+        }
+
+        let file_name = entry.file_name();
+        let tmp_path = tmp_dir.join(&file_name);
+
+        // Move the file to the tmp directory
+        fs::rename(&src_path, &tmp_path)?;
+
+        moved_files.push(file_name.into());
+    }
+
+    Ok(moved_files)
+}
+
+fn restore_files(moved_files: &Vec<PathBuf>, src_dir: &Path, tmp_dir: &Path) -> std::io::Result<()> {
+    for file_name in moved_files {
+        let tmp_path = tmp_dir.join(&file_name);
+        let src_path = src_dir.join(&file_name);
+
+        // Move the file back to the original directory
+        fs::rename(&tmp_path, &src_path)?;
+    }
+
+    Ok(())
+}
+
+fn delete_all_files_in_dir(dir: &Path) -> std::io::Result<()> {
+    for entry in fs::read_dir(dir)? {
+        let entry = entry?;
+        let path = entry.path();
+
+        // Check if the entry is a file (not a directory)
+        if path.is_file() {
+            fs::remove_file(path)?;
         }
     }
 
-    pub fn get_formatted_time(&self) -> Result<String, Box<dyn std::error::Error>> {
-        Ok(self.date_edited.with_timezone(&Local).format("%I:%M%p, %b %e, %Y").to_string().to_lowercase())
-    }
-
-    /// Consumes the WebPage and converts its content into the built version of the WebPage
-    /// containing html header, navigation, and other page features.
-    pub fn build(self, dest_dir: &Path) -> Result<(), &'static str> {
-
-        let body = Body::builder()
-            .push(self.get_header())
-            .push(self.get_main())
-            .push(self.get_footer())
-            .build();
-
-        let html = Html::builder()
-            .lang("en")
-            .push(self.get_head())
-            .push(body)
-            .build();
-
-       println!(
-            "Writing {} to {}",
-            self.name,
-            dest_dir.join(&self.name).display()
-        );
-
-        // create a new file with that file name in ../site/
-        fs::write(
-            dest_dir.join(format!("{}.html", &self.name)), 
-            html.to_string().into_bytes()
-        ).unwrap();
-
-        Ok(())
-    }
-
-    fn get_header(&self) -> Header {
-        let mut header = Header::builder();
-        let div = Division::builder()
-            .class("special")
-            .heading_1(|h1| h1
-                .anchor(|a| a
-                    .href("special.html")
-                    .text("*")
-                    )
-                .text(SITE_NAME)
-                )
-            .build();
-        header.push(div);
-        // add back to home nav for all non-home pages.
-        if self.name != "home" {
-            let back_to_home = Division::builder()
-                .class("mini-indent")
-                .anchor(|a| a
-                    .href("home.html")
-                    .text("back to home")
-                    )
-                .build();
-            header.push(back_to_home);
-        }
-        
-        header.build()
-    }
-
-    fn get_head(&self) -> Head {
-        let head = Head::builder()
-            .title(|title| title 
-                .text(format!("{} - {}", SITE_NAME, self.name))
-                )
-            .meta(|meta| meta
-                .name("description")
-                .content(format!("welcome to {}!!", SITE_NAME))
-                )
-            .link(|link| link
-                .rel("apple-touch-icon")
-                .sizes("180x180")
-                .href("../icons/apple-touch-icon.png")
-                )
-            .link(|link| link
-                .rel("manifest")
-                .href("../site.manifest")
-                )
-            .meta(|meta| meta
-                .name("viewport")
-                .content("width=device-width, initial-scale=1.0")
-                )
-            .link(|link| link
-                .href("../styles/style.css")
-                .rel("stylesheet")
-                )
-            .build();
-
-        head
-    }
-
-    fn get_main(&self) -> Main {
-        let main = Main::builder()
-            .division(|inner| inner 
-                .class("inner")
-                .division(|indent| indent
-                    .class("indent")
-                    .text(self.content.clone())
-                    )
-                )
-            .build();
-
-        main
-    }
-
-    fn get_footer(&self) -> Footer {
-        let gh_link = "https://github.com/andii-online/me";
-        let last_edited_msg = format!("edited on {}", self.get_formatted_time().unwrap());
-        let footer = Footer::builder()
-            .division(|div| div
-                .class("left")
-                .paragraph(|p| p
-                    .anchor(|a| a
-                        .text("*website src")
-                        .href(gh_link)
-                        )
-                    )
-                )
-            .division(|div| div
-                .class("right")
-                .paragraph(|p| p
-                    .text(last_edited_msg)
-                    )
-                )
-            .build();
-
-        footer
-    }
+    Ok(())
 }
