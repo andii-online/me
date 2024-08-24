@@ -34,12 +34,16 @@ fn main() {
     let index = get_site_index(&files);
 
     // Convert the files into pages
-    let mut pages: Vec<WebPage> = files
+    let results: Result<Vec<WebPage>, String> = files
         .into_iter()
-        .map(|file| WebPage::from_web_page_file(file).unwrap())
+        .map(|file| WebPage::from_web_page_file(file, &index))
         .collect();
-    pages.push(index);
-    pages.sort();
-
-    write_site(&pages, &site_dir);
+    match results {
+        Ok(mut pages) => {
+            pages.push(index.page);
+            pages.sort();
+            write_site(&pages, &site_dir);
+        },
+        Err(e) => eprintln!("Error while collecting pages:\n {}", e),
+    }
 }

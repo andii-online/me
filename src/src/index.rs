@@ -5,8 +5,14 @@ use html::content::Heading2;
 use html::inline_text::Anchor;
 use html::text_content::{Division, ListItem, UnorderedList};
 
+
+pub struct SiteIndex {
+    pub page: WebPage,
+    pub pages: Vec<String>,
+}
+
 /// Creates the special site index WebPage.
-pub fn get_site_index(pages: &Vec<WebPageFile>) -> WebPage {
+pub fn get_site_index(pages: &Vec<WebPageFile>) -> SiteIndex {
     let mut index = Division::builder();
     let title = Heading2::builder().text("Site Index").build();
     index.push(title);
@@ -32,5 +38,11 @@ pub fn get_site_index(pages: &Vec<WebPageFile>) -> WebPage {
     }
     index.push(ul.build());
 
-    WebPage::from_string(String::from("index"), index.build().to_string())
+    let page = WebPage::from_string(String::from("index"), index.build().to_string());
+    let pages: Vec<String> = pages.into_iter().map(|page| page.file_path.file_stem().unwrap().to_string_lossy().into_owned()).collect();
+
+    SiteIndex {
+        page,
+        pages,
+    }
 }

@@ -21,7 +21,7 @@ pub fn write_site(pages: &Vec<WebPage>, site_dir: &Path) {
     };
     println!("Generating site pages...");
     for web_page in pages {
-        match write_web_page(&web_page, &site_dir) {
+        match write_web_page(&web_page, &site_dir, ) {
             Ok(()) => (),
             Err(e) => {
                 eprintln!("While building site, page {} failed on error: {}", web_page.name, e);

@@ -9,19 +9,32 @@ use html::inline_text::Anchor;
 use regex::Regex;
 
 use crate::web_page_file::WebPageFile;
-
+use crate::index::SiteIndex;
 use crate::SITE_NAME;
 
-fn replace_file_links(input: &str, generate_link: fn(&str, Option<&str>) -> Anchor) -> String {
+fn replace_file_links(input: &str, index: &SiteIndex, generate_link: fn(&str, Option<&str>) -> Anchor) -> Result<String, String> {
     // regex to match {file_name, optional[pretty_name]}
     let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
-    let result = re.replace_all(input, |caps: &regex::Captures| {
-        let file_name = &caps[1];
-        let pretty_name = caps.get(2).map(|m| m.as_str());
-        generate_link(file_name, pretty_name).to_string()
-    });
+    let mut result = String::new();
 
-    result.to_string()
+    let mut last_pos = 0;
+    for caps in re.captures_iter(input) {
+        let range = caps.get(0).unwrap().range();
+        result.push_str(&input[last_pos..range.start]);
+
+        let file_name = &caps[1];
+        if !index.pages.contains(&file_name.to_string()) {
+            return Err(format!("Found bad link '{}'", file_name));
+        }
+
+        let pretty_name = caps.get(2).map(|m| m.as_str());
+        result.push_str(&generate_link(file_name, pretty_name).to_string());
+        last_pos = range.end;
+    }
+
+    result.push_str(&input[last_pos..]);
+
+    Ok(result)
 }
 
 fn generate_link(file_name: &str, pretty_name: Option<&str>) -> Anchor {
@@ -45,11 +58,11 @@ pub struct WebPage {
 
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
-    pub fn from_web_page_file(mut page_file: WebPageFile) -> Result<WebPage, &'static str> {
+    pub fn from_web_page_file(mut page_file: WebPageFile, index: &SiteIndex) -> Result<WebPage, String> {
         let contents = match page_file.get_page_contents() {
             Ok(val) => val,
             Err(e) => panic!(
-                "While reading file {}, encountered error: {}",
+                "While reading file {},  {}",
                 page_file.get_file_name(),
                 e
             ),
@@ -60,11 +73,15 @@ impl WebPage {
         let modified_time = FileTime::from_last_modification_time(&page_file.metadata);
         let date_edited = DateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds()).unwrap();
 
-        Ok(WebPage {
-            name,
-            content: replace_file_links(&contents, generate_link),
-            date_edited,
-        })
+        match replace_file_links(&contents, &index, generate_link) {
+            Ok(linked_content) => Ok(WebPage {
+                name,
+                content: linked_content,
+                date_edited,
+            }),
+            Err(e) => Err(format!("While trying to build page '{}'...\n {}", name, e)), 
+        }
+
     }
 
     /// Converts a String into a WebPage
