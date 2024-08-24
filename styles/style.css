@@ -140,6 +140,7 @@ tbody td:nth-child(3) {
     font-style: italic;
 }
 
+
 a {
     font-weight: bold;
     color: var(--main-color);
@@ -183,6 +184,12 @@ li {
 
 .silly b {
     color: var(--highlight-color);
+}
+
+.special a {
+    text-decoration: none;
+    color: var(--main-color);
+    background-color: var(--main-bg-color);
 }
 
 footer {
