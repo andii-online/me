@@ -189,7 +189,6 @@ li {
 
 .photo-header img {
     width: 50%;
-    border-radius: 10px;
     display: block;
     object-fit: cover;
     flex-shrink: 0;
