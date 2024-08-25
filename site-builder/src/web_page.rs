@@ -2,17 +2,21 @@ use chrono::offset::Utc;
 use chrono::{DateTime, Local};
 use filetime::FileTime;
 use html::content::{Footer, Header, Main};
+use html::inline_text::Anchor;
 use html::metadata::Head;
 use html::root::{Body, Html};
 use html::text_content::Division;
-use html::inline_text::Anchor;
 use regex::Regex;
 
-use crate::web_page_file::WebPageFile;
 use crate::index::SiteIndex;
+use crate::web_page_file::WebPageFile;
 use crate::SITE_NAME;
 
-fn replace_file_links(input: &str, index: &SiteIndex, generate_link: fn(&str, Option<&str>) -> Anchor) -> Result<String, String> {
+fn replace_file_links(
+    input: &str,
+    index: &SiteIndex,
+    generate_link: fn(&str, Option<&str>) -> Anchor,
+) -> Result<String, String> {
     // regex to match {file_name, optional[pretty_name]}
     let re = Regex::new(r"\{([^,}]+)(?:,([^}]+))?\}").unwrap();
     let mut result = String::new();
@@ -58,20 +62,20 @@ pub struct WebPage {
 
 impl WebPage {
     /// Constructs a new WebPage from an .htm source
-    pub fn from_web_page_file(mut page_file: WebPageFile, index: &SiteIndex) -> Result<WebPage, String> {
+    pub fn from_web_page_file(
+        mut page_file: WebPageFile,
+        index: &SiteIndex,
+    ) -> Result<WebPage, String> {
         let contents = match page_file.get_page_contents() {
             Ok(val) => val,
-            Err(e) => panic!(
-                "While reading file {},  {}",
-                page_file.get_file_name(),
-                e
-            ),
+            Err(e) => panic!("While reading file {},  {}", page_file.get_file_name(), e),
         };
 
         let name = String::from(page_file.file_path.file_stem().unwrap().to_str().unwrap());
 
         let modified_time = FileTime::from_last_modification_time(&page_file.metadata);
-        let date_edited = DateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds()).unwrap();
+        let date_edited =
+            DateTime::from_timestamp(modified_time.seconds(), modified_time.nanoseconds()).unwrap();
 
         match replace_file_links(&contents, &index, generate_link) {
             Ok(linked_content) => Ok(WebPage {
@@ -79,9 +83,8 @@ impl WebPage {
                 content: linked_content,
                 date_edited,
             }),
-            Err(e) => Err(format!("While trying to build page '{}'...\n {}", name, e)), 
+            Err(e) => Err(format!("While trying to build page '{}'...\n {}", name, e)),
         }
-
     }
 
     /// Converts a String into a WebPage
@@ -126,7 +129,7 @@ impl WebPage {
         let div = Division::builder()
             .class("special")
             .heading_1(|h1| {
-                h1.anchor(|a| a.href("index.html").text("*"))
+                h1.anchor(|a| a.class("logo").href("index.html").text("*"))
                     .text(SITE_NAME)
             })
             .build();

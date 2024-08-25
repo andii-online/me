@@ -176,8 +176,6 @@ li {
 
 .photo {
     padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .photo p {
@@ -193,6 +191,8 @@ li {
     width: 50%;
     border-radius: 10px;
     display: block;
+    object-fit: cover;
+    flex-shrink: 0;
 }
 
 .photo-header h3 {
@@ -200,6 +200,10 @@ li {
     font-weight: normal;
     align-self: flex-end;
     margin: 0;
+}
+
+.logo {
+    font-size: 50px;
 }
 
 .silly {
@@ -229,7 +233,6 @@ li {
     text-decoration: none;
     color: var(--main-color);
     background-color: None;
-
 }
 
 
