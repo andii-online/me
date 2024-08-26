@@ -8,7 +8,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use web_page::WebPage;
 
-pub const SITE_NAME: &str = "chloe land";
+pub const SITE_NAME: &str = "chlo.exposed";
 
 pub fn write_site(pages: &Vec<WebPage>, site_dir: &Path) {
     let tmp_dir = Path::new(".tmp/");
